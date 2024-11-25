@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerHelper {
-    private static MinecraftServer server;
+    public static MinecraftServer server;
 
     public static void runCommand(String command) {
         server.getCommands().performPrefixedCommand(server.createCommandSourceStack().withSuppressedOutput(), command);
