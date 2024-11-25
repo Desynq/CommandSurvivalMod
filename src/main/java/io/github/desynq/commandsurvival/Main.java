@@ -1,6 +1,7 @@
 package io.github.desynq.commandsurvival;
 
 import com.mojang.logging.LogUtils;
+import io.github.desynq.commandsurvival.util.TaskScheduler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -20,7 +21,7 @@ public class Main
     // Define mod id in a common place for everything to reference
     public static final String MODID = "commandsurvival";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
     public Main()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -30,17 +31,10 @@ public class Main
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-
-        // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-    }
-
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
