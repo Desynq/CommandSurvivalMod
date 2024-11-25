@@ -15,7 +15,11 @@ plugins {
     id "org.parchmentmc.librarian.forgegradle" version "1.+"
 }
 
-apply plugin: "org.spongepowered.mixin"
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
 
 version = mod_version
 group = mod_group_id
@@ -47,29 +51,21 @@ minecraft {
 
         client {
             property 'forge.enabledGameTestNamespaces', mod_id
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         server {
             property 'forge.enabledGameTestNamespaces', mod_id
             args '--nogui'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         gameTestServer {
             property 'forge.enabledGameTestNamespaces', mod_id
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         data {
             workingDirectory project.file('run-data')
 
             args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
     }
 }
@@ -77,6 +73,9 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    flatDir {
+        dir 'libs'
+    }
     maven {
         // Shedaniel's maven (Architectury API)
         url = "https://maven.architectury.dev"
@@ -98,23 +97,35 @@ repositories {
         }
     }
     maven {
+        // Caelus API
         name = "C4's Maven"
         url = "https://maven.theillusivec4.top/"
     }
     maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
         url = "https://jitpack.io"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
     }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf("curse.maven:origins-474438:$origins_fileid")
+    implementation  fg.deobf("top.theillusivec4.caelus:caelus-forge:$caelus_version")
+    implementation  fg.deobf("io.github.edwinmindcraft:calio-forge:${minecraft_version}-${calio_version}")
+    implementation  fg.deobf("io.github.edwinmindcraft:apoli-forge:${minecraft_version}-${apoli_version}")
+    implementation  fg.deobf("io.github.edwinmindcraft:origins-forge:${minecraft_version}-${origins_version}-all")
+    implementation  fg.deobf("de.dafuqs:additionalentityattributes-forge:${aea_version}")
 
-    runtimeOnly "top.theillusivec4.caelus:caelus-forge:${caelus_version}"
-    compileOnly "top.theillusivec4.caelus:caelus-forge:${caelus_version}:api"
-
-    implementation fg.deobf("com.github.Virtuoel:Pehkui:${pehkui_version}")
+    implementation fg.deobf("com.github.Virtuoel:Pehkui:${pehkui_version}-${minecraft_version}-forge")
 }
 
 tasks.named('processResources', ProcessResources).configure {
