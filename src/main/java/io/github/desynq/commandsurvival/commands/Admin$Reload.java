@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.commands.admin;
+package io.github.desynq.commandsurvival.commands;
 
 import io.github.desynq.commandsurvival.util.MagicValues;
 import io.github.desynq.commandsurvival.util.ServerHelper;
@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
-public class Reload {
+public class Admin$Reload {
 
     public static int scheduleReload(int startSeconds) {
         for (int seconds = startSeconds; seconds >= 0; seconds--) {
