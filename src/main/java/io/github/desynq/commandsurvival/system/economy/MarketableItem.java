@@ -1,5 +1,6 @@
 package io.github.desynq.commandsurvival.system.economy;
 
+import io.github.desynq.commandsurvival.util.MathHelper;
 import io.github.desynq.commandsurvival.util.data.money.Money;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -9,8 +10,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import static io.github.desynq.commandsurvival.system.economy.MarketableItemSerializer.*;
 
 /**
  * <pre>
@@ -28,6 +27,10 @@ import static io.github.desynq.commandsurvival.system.economy.MarketableItemSeri
  * </pre>
  */
 public class MarketableItem {
+    //------------------------------------------------------------------------------------------------------------------
+    // Instance Fields
+    //------------------------------------------------------------------------------------------------------------------
+
     public final ItemStack itemStack;
     public final Money basePrice;
     public final @Nullable MarketableItemPredicate<Player, CompoundTag> predicate;
@@ -37,9 +40,11 @@ public class MarketableItem {
     public final @Nullable Money sellPriceFloor;
     public final @Nullable Money buyPriceCeiling;
     public final Float buyModifier;
-    public final int startingCirculation;
+    public final double startingCirculation;
 
-    public static Set<MarketableItem> instances = new HashSet<>();
+    //------------------------------------------------------------------------------------------------------------------
+    // Constructors
+    //------------------------------------------------------------------------------------------------------------------
 
     public MarketableItem(@NotNull MarketableItemBuilder builder) {
         this.itemStack = builder.itemStack;
@@ -56,19 +61,58 @@ public class MarketableItem {
         instances.add(this);
     }
 
-    public int getAmountSold() {
-        if (!hasCirculation(this)) {
-            setCirculation(this, startingCirculation);
-        }
-        return getCirculation(this);
+    //------------------------------------------------------------------------------------------------------------------
+    // Static Methods and Fields
+    //------------------------------------------------------------------------------------------------------------------
+
+    public static Set<MarketableItem> instances = new HashSet<>();
+
+    public static void diminishAll(double percentage) {
+        instances.forEach(marketableItem -> {
+            marketableItem.fluctuateCirculation(percentage);
+        });
     }
+
+    public static double getBiasedFluctuationPercentage() {
+        // mean gain/loss = 2.5%
+        return MathHelper.getBiasedRandom(0, 0.5, 20);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Circulation
+    //------------------------------------------------------------------------------------------------------------------
+
+    public double getCirculation() {
+        if (!MarketableItemSerializer.hasCirculation(this)) {
+            MarketableItemSerializer.setCirculation(this, startingCirculation);
+        }
+        return MarketableItemSerializer.getCirculation(this);
+    }
+
+    public void setCirculation(double amount) {
+        MarketableItemSerializer.setCirculation(this, amount);
+    }
+
+    public void addToCirculation(double amount) {
+        setCirculation(getCirculation() + amount);
+    }
+
+    public void fluctuateCirculation(double percentage) {
+        double circulation = getCirculation();
+        circulation *= 1 + (circulation < startingCirculation ? 1 : -1) * percentage;
+        setCirculation(circulation);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Pricing
+    //------------------------------------------------------------------------------------------------------------------
 
     public Money getSellPrice() {
         if (scaleQuantity == null) {
             return basePrice;
         }
-        // basePrice * (0.5 ** (amountSold / scaleQuantity))
-        double scale = (double) getAmountSold() / scaleQuantity;
+        // basePrice * (0.5 ** (circulation / (scaleQuantity + startingCirculation)))
+        double scale = getCirculation() / (scaleQuantity + startingCirculation);
         double realPrice = basePrice.getRaw() * Math.pow(0.5, scale);
         if (sellPriceFloor != null) {
             realPrice = Math.max(realPrice, sellPriceFloor.getRaw());
@@ -87,7 +131,13 @@ public class MarketableItem {
         return Money.fromCents(realPrice);
     }
 
+    public Money estimate(int day) {
+        return null;
+    }
 
+    //------------------------------------------------------------------------------------------------------------------
+    // Side Effects
+    //------------------------------------------------------------------------------------------------------------------
 
     public boolean buy(Player player) {
         return true;

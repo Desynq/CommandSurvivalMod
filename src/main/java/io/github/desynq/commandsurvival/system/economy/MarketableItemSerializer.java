@@ -13,16 +13,16 @@ public class MarketableItemSerializer extends PersistentDataSerializer {
     }
 
     public static boolean hasCirculation(MarketableItem marketableItem) {
-        return INSTANCE.deserializeNBT().contains(marketableItem.itemName, Tag.TAG_INT);
+        return INSTANCE.deserializeNBT().contains(marketableItem.itemName, Tag.TAG_DOUBLE);
     }
 
-    public static int getCirculation(MarketableItem marketableItem) {
-        return INSTANCE.deserializeNBT().getInt(marketableItem.itemName);
+    public static double getCirculation(MarketableItem marketableItem) {
+        return INSTANCE.deserializeNBT().getDouble(marketableItem.itemName);
     }
 
-    public static void setCirculation(MarketableItem marketableItem, int newAmount) {
+    public static void setCirculation(MarketableItem marketableItem, double newAmount) {
         CompoundTag tag = INSTANCE.deserializeNBT();
-        tag.putInt(marketableItem.itemName, newAmount);
+        tag.putDouble(marketableItem.itemName, newAmount);
         INSTANCE.serializeNBT(tag);
     }
 }

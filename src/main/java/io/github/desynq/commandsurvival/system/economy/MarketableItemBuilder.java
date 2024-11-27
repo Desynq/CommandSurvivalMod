@@ -20,7 +20,7 @@ public class MarketableItemBuilder {
     public Money sellPriceFloor;
     public Money buyPriceCeiling;
     public Float buyModifier = 2.0f;
-    public int startingCirculation = 0;
+    public double startingCirculation = 0.0;
 
     private MarketableItemBuilder(ItemStack itemStack, Money basePrice, String itemCategory, String itemName) {
         this.itemStack = itemStack;
@@ -58,7 +58,7 @@ public class MarketableItemBuilder {
         return this;
     }
 
-    public MarketableItemBuilder startingCirculation(int startingCirculation) {
+    public MarketableItemBuilder startingCirculation(double startingCirculation) {
         this.startingCirculation = startingCirculation;
         return this;
     }
