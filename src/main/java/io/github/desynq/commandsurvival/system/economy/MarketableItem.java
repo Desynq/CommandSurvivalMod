@@ -1,6 +1,6 @@
 package io.github.desynq.commandsurvival.system.economy;
 
-import io.github.desynq.commandsurvival.system.economy.builder.MarketableItemFluentBuilder;
+import io.github.desynq.commandsurvival.system.economy.builder.MarketableItemBuilder;
 import io.github.desynq.commandsurvival.util.MathHelper;
 import io.github.desynq.commandsurvival.util.data.money.Money;
 import net.minecraft.nbt.CompoundTag;
@@ -47,7 +47,7 @@ public class MarketableItem implements MarketableItemInterface {
     // Constructors
     //------------------------------------------------------------------------------------------------------------------
 
-    public MarketableItem(@NotNull MarketableItemFluentBuilder builder) {
+    public MarketableItem(@NotNull MarketableItemBuilder builder) {
         this.itemStack = builder.itemStack;
         this.basePrice = builder.basePrice;
         this.predicate = builder.predicate;

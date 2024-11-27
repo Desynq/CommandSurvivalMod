@@ -1,13 +1,13 @@
 package io.github.desynq.commandsurvival.system.economy;
 
-import io.github.desynq.commandsurvival.system.economy.builder.MarketableItemFluentBuilder;
+import io.github.desynq.commandsurvival.system.economy.builder.MarketableItemBuilder;
 import io.github.desynq.commandsurvival.util.data.money.Money;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class MarketableItems {
 
-    public static final MarketableItem DIAMOND = MarketableItemFluentBuilder
+    public static final MarketableItem DIAMOND = MarketableItemBuilder
             .newInstance()
             .setItemStack(new ItemStack(Items.DIAMOND.asItem()))
             .setBasePrice(Money.fromDollars(100.00))
