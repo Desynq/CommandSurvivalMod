@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.commands;
+package io.github.desynq.commandsurvival.commands.admin;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;

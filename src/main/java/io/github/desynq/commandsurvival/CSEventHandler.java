@@ -1,6 +1,6 @@
 package io.github.desynq.commandsurvival;
 
-import io.github.desynq.commandsurvival.commands.AdminCommand;
+import io.github.desynq.commandsurvival.commands.admin.AdminCommand;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

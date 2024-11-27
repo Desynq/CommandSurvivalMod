@@ -1,10 +1,9 @@
-package io.github.desynq.commandsurvival.commands;
+package io.github.desynq.commandsurvival.commands.admin;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.desynq.commandsurvival.commands.admin.SetMoneyProcess;
 import io.github.desynq.commandsurvival.util.data.money.Money;
 import io.github.desynq.commandsurvival.util.data.Username;
 import net.minecraft.commands.CommandSourceStack;

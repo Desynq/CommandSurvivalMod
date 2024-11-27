@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.commands;
+package io.github.desynq.commandsurvival.commands.admin;
 
 import io.github.desynq.commandsurvival.util.MagicValues;
 import io.github.desynq.commandsurvival.util.ServerHelper;
