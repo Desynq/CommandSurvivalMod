@@ -1,31 +1,29 @@
 package io.github.desynq.commandsurvival.util.data.money;
 
-import io.github.desynq.commandsurvival.util.ServerHelper;
+import io.github.desynq.commandsurvival.util.data.PersistentDataSerializer;
 import net.minecraft.nbt.CompoundTag;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Package-only
  */
-class MoneySerializer {
-    private static final String KEY = "player_money";
+class MoneySerializer extends PersistentDataSerializer {
+    private static final MoneySerializer INSTANCE = new MoneySerializer();
 
-    private static CompoundTag deserializeNBT() {
-        return ServerHelper.getPersistentData().getCompound(KEY);
+    @Override
+    protected String getKey() {
+        return "player_money";
     }
 
-    private static void serializeNBT(CompoundTag tag) {
-        ServerHelper.getPersistentData().put(KEY, tag);
+    @Contract("_ -> new")
+    public static @NotNull Money getMoney(String uuidString) {
+        return Money.fromCents(INSTANCE.deserializeNBT().getLong(uuidString));
     }
 
-
-
-    public static Money getMoney(String uuidString) {
-        return Money.fromCents(deserializeNBT().getLong(uuidString));
-    }
-
-    public static void setMoney(String uuidString, Money money) {
-        CompoundTag tag = deserializeNBT();
+    public static void setMoney(String uuidString, @NotNull Money money) {
+        CompoundTag tag = INSTANCE.deserializeNBT();
         tag.putLong(uuidString, money.getRaw());
-        serializeNBT(tag);
+        INSTANCE.serializeNBT(tag);
     }
 }
