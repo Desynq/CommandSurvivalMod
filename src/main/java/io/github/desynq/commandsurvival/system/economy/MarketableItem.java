@@ -1,5 +1,6 @@
 package io.github.desynq.commandsurvival.system.economy;
 
+import io.github.desynq.commandsurvival.system.economy.builder.MarketableItemFluentBuilder;
 import io.github.desynq.commandsurvival.util.MathHelper;
 import io.github.desynq.commandsurvival.util.data.money.Money;
 import net.minecraft.nbt.CompoundTag;
@@ -26,35 +27,35 @@ import java.util.Set;
  *   - Conversely, how many of the item needs to be bought for the price to increase by 100%
  * </pre>
  */
-public class MarketableItem {
+public class MarketableItem implements MarketableItemInterface {
     //------------------------------------------------------------------------------------------------------------------
     // Instance Fields
     //------------------------------------------------------------------------------------------------------------------
 
-    public final ItemStack itemStack;
-    public final Money basePrice;
+    public final double startingCirculation;
+    public final @NotNull ItemStack itemStack;
+    public final @NotNull Money basePrice;
+    public final @NotNull String itemCategory;
+    public final @NotNull String itemName;
     public final @Nullable MarketableItemPredicate<Player, CompoundTag> predicate;
     public final @Nullable Integer scaleQuantity;
-    public final String itemCategory;
-    public final String itemName;
-    public final @Nullable Money sellPriceFloor;
-    public final @Nullable Money buyPriceCeiling;
-    public final Float buyModifier;
-    public final double startingCirculation;
+    public final @Nullable Money priceFloor;
+    public final @Nullable Money priceCeiling;
+    public final @Nullable Double buyModifier;
 
     //------------------------------------------------------------------------------------------------------------------
     // Constructors
     //------------------------------------------------------------------------------------------------------------------
 
-    public MarketableItem(@NotNull MarketableItemBuilder builder) {
+    public MarketableItem(@NotNull MarketableItemFluentBuilder builder) {
         this.itemStack = builder.itemStack;
         this.basePrice = builder.basePrice;
         this.predicate = builder.predicate;
         this.scaleQuantity = builder.scaleQuantity;
         this.itemCategory = builder.itemCategory;
         this.itemName = builder.itemName;
-        this.sellPriceFloor = builder.sellPriceFloor;
-        this.buyPriceCeiling = builder.buyPriceCeiling;
+        this.priceFloor = builder.priceFloor;
+        this.priceCeiling = builder.priceCeiling;
         this.buyModifier = builder.buyModifier;
         this.startingCirculation = builder.startingCirculation;
 
@@ -98,9 +99,15 @@ public class MarketableItem {
     }
 
     public void fluctuateCirculation(double percentage) {
-        double circulation = getCirculation();
-        circulation *= 1 + (circulation < startingCirculation ? 1 : -1) * percentage;
-        setCirculation(circulation);
+        double fluctuatedCirculation = getFluctuatedCirculation(getCirculation(), startingCirculation, percentage);
+        setCirculation(fluctuatedCirculation);
+    }
+
+    /**
+     * Extracted code from fluctuateCirculation() to allow for isolated simulation
+     */
+    public static double getFluctuatedCirculation(double circulation, double startingCirculation, double percentage) {
+        return circulation * (1 + (circulation < startingCirculation ? 1 : -1) * percentage);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -108,31 +115,48 @@ public class MarketableItem {
     //------------------------------------------------------------------------------------------------------------------
 
     public Money getSellPrice() {
-        if (scaleQuantity == null) {
-            return basePrice;
-        }
-        // basePrice * (0.5 ** (circulation / (scaleQuantity + startingCirculation)))
-        double scale = getCirculation() / (scaleQuantity + startingCirculation);
-        double realPrice = basePrice.getRaw() * Math.pow(0.5, scale);
-        if (sellPriceFloor != null) {
-            realPrice = Math.max(realPrice, sellPriceFloor.getRaw());
-        }
-        return Money.fromCents(realPrice);
+        return MarketableItemInterface.getSellPrice(
+                basePrice,
+                getCirculation(),
+                startingCirculation,
+                scaleQuantity,
+                priceFloor,
+                priceCeiling
+        );
     }
 
+    /**
+     * max = priceCeiling * buyModifier<br>
+     * min = priceFloor * buyModifier
+     */
     public Money getBuyPrice() {
         if (buyModifier == null || buyModifier < 1) {
             return null; // item is not buyable
         }
         double realPrice = getSellPrice().getRaw() * buyModifier;
-        if (buyPriceCeiling != null) {
-            realPrice = Math.min(realPrice, buyPriceCeiling.getRaw());
-        }
         return Money.fromCents(realPrice);
     }
 
-    public Money estimate(int day) {
-        return null;
+    /**
+     * Estimates what the item's circulation might be after x amount of days
+     */
+    public Money estimate(int days) {
+        double circulation = getCirculation();
+        double percentage;
+
+        for (int day = days; day >= 0; day--) {
+            percentage = getBiasedFluctuationPercentage();
+            circulation = getFluctuatedCirculation(circulation, startingCirculation, percentage);
+        }
+
+        return MarketableItemInterface.getSellPrice(
+                basePrice,
+                circulation,
+                startingCirculation,
+                scaleQuantity,
+                priceFloor,
+                priceCeiling
+        );
     }
 
     //------------------------------------------------------------------------------------------------------------------
