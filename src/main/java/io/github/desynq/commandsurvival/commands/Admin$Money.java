@@ -1,12 +1,11 @@
 package io.github.desynq.commandsurvival.commands;
 
-import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.desynq.commandsurvival.system.economy.MoneyHelper;
-import io.github.desynq.commandsurvival.system.economy.PlayerMoneyHelper;
+import io.github.desynq.commandsurvival.commands.admin.SetMoneyProcess;
+import io.github.desynq.commandsurvival.util.data.money.Money;
 import io.github.desynq.commandsurvival.util.data.Username;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
@@ -29,8 +28,8 @@ class Admin$Money {
                     )
                     .then(literal("set")
                             .then(USERNAME_ARGUMENT
-                                    .then(argument("amount", LongArgumentType.longArg(0))
-                                            .executes(Admin$Money::setMoney)
+                                    .then(argument("amount", StringArgumentType.string())
+                                            .executes(SetMoneyProcess::execute)
                                     )
                             )
                     );
@@ -39,16 +38,16 @@ class Admin$Money {
 
     private static int getMoney(CommandContext<CommandSourceStack> command) {
         Username username = new Username(command, "username");
-        long money = PlayerMoneyHelper.getMoney(username.getUUIDString());
+        Money money = Money.fromStringUUID(username.getStringUUID());
 
         Player player = command.getSource().getPlayer();
         if (player != null) {
-            getMoney$Message(player, money);
+            getMoney$message(player, money);
         }
 
         return 1;
     }
-    private static void getMoney$Message(@NotNull Player player, long money) {
+    private static void getMoney$message(@NotNull Player player, Money money) {
         player.sendSystemMessage(Component.literal("Player ")
                 .withStyle(GRAY)
                 .append(player.getDisplayName())
@@ -57,47 +56,8 @@ class Admin$Money {
                                 .withStyle(GRAY)
                 )
                 .append(
-                        Component.literal(MoneyHelper.toDollarString(money))
+                        Component.literal(money.getDollarString())
                                 .withStyle(DARK_GREEN)
-                )
-        );
-    }
-
-
-
-    private static int setMoney(CommandContext<CommandSourceStack> command) {
-        Username username = new Username(command, "username");
-        long amount = LongArgumentType.getLong(command, "amount");
-
-        Player player = command.getSource().getPlayer();
-        if (player != null) {
-            long previousMoney = PlayerMoneyHelper.getMoney(username.getUUIDString());
-            setMoney$Message(player, amount, previousMoney);
-        }
-
-        PlayerMoneyHelper.setMoney(username.getUUIDString(), amount);
-
-        return 1;
-    }
-    private static void setMoney$Message(@NotNull Player player, long amount, long previousMoney) {
-        player.sendSystemMessage(Component.literal("Player ")
-                .withStyle(GRAY)
-                .append(player.getDisplayName())
-                .append(
-                        Component.literal(" now has ")
-                                .withStyle(GRAY)
-                )
-                .append(
-                        Component.literal(MoneyHelper.toDollarString(amount))
-                                .withStyle(DARK_GREEN)
-                )
-                .append(
-                        Component.literal(" instead of ")
-                                .withStyle(GRAY)
-                )
-                .append(
-                        Component.literal(MoneyHelper.toDollarString(previousMoney))
-                                .withStyle(YELLOW)
                 )
         );
     }

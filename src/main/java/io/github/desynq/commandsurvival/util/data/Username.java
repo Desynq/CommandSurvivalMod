@@ -25,7 +25,7 @@ public class Username {
         return username;
     }
 
-    public String getUUIDString() {
+    public String getStringUUID() {
         return UsernameUUIDMap.getStringUUID(username);
     }
 }
