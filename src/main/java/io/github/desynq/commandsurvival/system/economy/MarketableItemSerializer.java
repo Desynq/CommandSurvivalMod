@@ -2,6 +2,7 @@ package io.github.desynq.commandsurvival.system.economy;
 
 import io.github.desynq.commandsurvival.util.data.PersistentDataSerializer;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 
 public class MarketableItemSerializer extends PersistentDataSerializer {
     private static final MarketableItemSerializer INSTANCE = new MarketableItemSerializer();
@@ -11,11 +12,15 @@ public class MarketableItemSerializer extends PersistentDataSerializer {
         return "items_sold";
     }
 
-    public static int getAmountSold(MarketableItem marketableItem) {
+    public static boolean hasCirculation(MarketableItem marketableItem) {
+        return INSTANCE.deserializeNBT().contains(marketableItem.itemName, Tag.TAG_INT);
+    }
+
+    public static int getCirculation(MarketableItem marketableItem) {
         return INSTANCE.deserializeNBT().getInt(marketableItem.itemName);
     }
 
-    public static void setAmountSold(MarketableItem marketableItem, int newAmount) {
+    public static void setCirculation(MarketableItem marketableItem, int newAmount) {
         CompoundTag tag = INSTANCE.deserializeNBT();
         tag.putInt(marketableItem.itemName, newAmount);
         INSTANCE.serializeNBT(tag);

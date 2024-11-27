@@ -10,6 +10,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
+import static io.github.desynq.commandsurvival.system.economy.MarketableItemSerializer.*;
+
 /**
  * <pre>
  * Defined by:
@@ -32,10 +34,10 @@ public class MarketableItem {
     public final @Nullable Integer scaleQuantity;
     public final String itemCategory;
     public final String itemName;
-    public final @Nullable Money buyPriceFloor;
     public final @Nullable Money sellPriceFloor;
     public final @Nullable Money buyPriceCeiling;
-    public final @Nullable Float buyModifier;
+    public final Float buyModifier;
+    public final int startingCirculation;
 
     public static Set<MarketableItem> instances = new HashSet<>();
 
@@ -46,16 +48,19 @@ public class MarketableItem {
         this.scaleQuantity = builder.scaleQuantity;
         this.itemCategory = builder.itemCategory;
         this.itemName = builder.itemName;
-        this.buyPriceFloor = builder.buyPriceFloor;
         this.sellPriceFloor = builder.sellPriceFloor;
         this.buyPriceCeiling = builder.buyPriceCeiling;
         this.buyModifier = builder.buyModifier;
+        this.startingCirculation = builder.startingCirculation;
 
         instances.add(this);
     }
 
     public int getAmountSold() {
-        return MarketableItemSerializer.getAmountSold(this);
+        if (!hasCirculation(this)) {
+            setCirculation(this, startingCirculation);
+        }
+        return getCirculation(this);
     }
 
     public Money getSellPrice() {
@@ -68,10 +73,23 @@ public class MarketableItem {
         if (sellPriceFloor != null) {
             realPrice = Math.max(realPrice, sellPriceFloor.getRaw());
         }
-        return Money.fromCents((long) Math.ceil(realPrice));
+        return Money.fromCents(realPrice);
     }
 
     public Money getBuyPrice() {
+        if (buyModifier == null || buyModifier < 1) {
+            return null; // item is not buyable
+        }
+        double realPrice = getSellPrice().getRaw() * buyModifier;
+        if (buyPriceCeiling != null) {
+            realPrice = Math.min(realPrice, buyPriceCeiling.getRaw());
+        }
+        return Money.fromCents(realPrice);
+    }
 
+
+
+    public boolean buy(Player player) {
+        return true;
     }
 }

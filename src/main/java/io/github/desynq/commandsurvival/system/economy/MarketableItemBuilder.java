@@ -17,10 +17,10 @@ public class MarketableItemBuilder {
     public Integer scaleQuantity;
     public final String itemCategory;
     public final String itemName;
-    public Money buyPriceFloor;
     public Money sellPriceFloor;
     public Money buyPriceCeiling;
-    public Float buyModifier;
+    public Float buyModifier = 2.0f;
+    public int startingCirculation = 0;
 
     private MarketableItemBuilder(ItemStack itemStack, Money basePrice, String itemCategory, String itemName) {
         this.itemStack = itemStack;
@@ -43,11 +43,6 @@ public class MarketableItemBuilder {
         return this;
     }
 
-    public MarketableItemBuilder buyPriceFloor(Money buyPriceFloor) {
-        this.buyPriceFloor = buyPriceFloor;
-        return this;
-    }
-
     public MarketableItemBuilder sellPriceFloor(Money sellPriceFloor) {
         this.sellPriceFloor = sellPriceFloor;
         return this;
@@ -60,6 +55,11 @@ public class MarketableItemBuilder {
 
     public MarketableItemBuilder buyModifier(float buyModifier) {
         this.buyModifier = buyModifier;
+        return this;
+    }
+
+    public MarketableItemBuilder startingCirculation(int startingCirculation) {
+        this.startingCirculation = startingCirculation;
         return this;
     }
 

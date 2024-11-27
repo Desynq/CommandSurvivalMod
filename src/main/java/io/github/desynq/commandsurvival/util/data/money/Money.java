@@ -20,12 +20,22 @@ public class Money {
         return new Money(cents);
     }
 
+    /**
+     * Always rounds up
+     */
+    public static Money fromCents(double cents) {
+        return new Money((long) Math.ceil(cents));
+    }
+
     public static Money fromDollars(long dollars) {
         return new Money(dollars * 100);
     }
 
+    /**
+     * Always rounds up
+     */
     public static Money fromDollars(double dollars) {
-        return new Money((long)(dollars * 100));
+        return new Money((long) Math.ceil(dollars * 100));
     }
 
     public static Money fromDollarsAndCents(long dollars, long cents) {
