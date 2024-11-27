@@ -1,6 +1,6 @@
 package io.github.desynq.commandsurvival.util.data;
 
-import io.github.desynq.commandsurvival.Main;
+import io.github.desynq.commandsurvival.CommandSurvival;
 import io.github.desynq.commandsurvival.util.ServerHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +18,7 @@ import java.util.Set;
  *
  * This data is mostly useful for when accessing offline data pertinent to a player.
  */
-@Mod.EventBusSubscriber(modid = Main.MODID)
+@Mod.EventBusSubscriber(modid = CommandSurvival.MODID)
 public class UsernameUUIDMap {
     private static final String USERNAME_UUID_MAP = "username_to_uuid_map";
 

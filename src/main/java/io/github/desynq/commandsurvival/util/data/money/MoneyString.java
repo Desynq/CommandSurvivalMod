@@ -1,10 +1,5 @@
 package io.github.desynq.commandsurvival.util.data.money;
 
-import io.github.desynq.commandsurvival.Main;
-import io.github.desynq.commandsurvival.util.ServerHelper;
-
-import java.util.Arrays;
-
 public class MoneyString {
     private String moneyString;
 

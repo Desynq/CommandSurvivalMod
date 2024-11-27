@@ -1,22 +1,17 @@
 package io.github.desynq.commandsurvival.util;
 
-import io.github.desynq.commandsurvival.Main;
-import net.minecraft.network.chat.Component;
+import io.github.desynq.commandsurvival.CommandSurvival;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 // https://github.com/Spaxterr/lynxlib/blob/e4de122d44abd912a37e4a43f351306db4a129aa/src/main/java/dev/spaxter/lynxlib/task/TaskScheduler.java#L11
-@Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = CommandSurvival.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TaskScheduler {
 
     private static final PriorityQueue<DelayedTask> taskQueue = new PriorityQueue<>();
@@ -76,7 +71,7 @@ public class TaskScheduler {
     @SubscribeEvent
     public static void onServerStart(ServerStartingEvent event) {
         server = event.getServer();
-        Main.LOGGER.debug("Started Task Scheduler");
+        CommandSurvival.LOGGER.debug("Started Task Scheduler");
     }
 
 

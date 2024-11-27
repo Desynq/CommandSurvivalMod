@@ -1,10 +1,9 @@
 package io.github.desynq.commandsurvival;
 
 import com.mojang.logging.LogUtils;
-import io.github.desynq.commandsurvival.util.TaskScheduler;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,14 +14,20 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(Main.MODID)
-public class Main
+@Mod(CommandSurvival.MODID)
+public class CommandSurvival
 {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "commandsurvival";
+
+    public static ResourceLocation modResourceLocation(String path) {
+        return new ResourceLocation(MODID, path);
+    }
+
+
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
-    public Main()
+    public CommandSurvival()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
