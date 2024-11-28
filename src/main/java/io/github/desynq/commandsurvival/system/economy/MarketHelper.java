@@ -28,7 +28,6 @@ public class MarketHelper {
         }
 
         double scale = circulation / scaleQuantity;
-        double realScale = scale - circulation;
         double realPrice = basePrice.getRaw() * Math.pow(0.5, scale);
 
         if (priceFloor != null) {
@@ -39,5 +38,13 @@ public class MarketHelper {
         }
 
         return Money.fromCents(realPrice);
+    }
+
+    /**
+     * TODO:
+     * Extract {@link MarketableItem#getBuyPrice} to static method here
+     */
+    public static Money getBuyPrice() {
+        return null;
     }
 }
