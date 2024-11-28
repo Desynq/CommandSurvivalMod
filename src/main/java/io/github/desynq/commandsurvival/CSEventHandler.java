@@ -1,6 +1,7 @@
 package io.github.desynq.commandsurvival;
 
 import io.github.desynq.commandsurvival.commands.admin.AdminCommand;
+import io.github.desynq.commandsurvival.commands.market.MarketCommand;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -12,5 +13,8 @@ public class CSEventHandler {
     public static void registerCommands(RegisterCommandsEvent event) {
         AdminCommand.register(event.getDispatcher());
         CommandSurvival.LOGGER.debug("Registered Admin Command");
+
+        MarketCommand.register(event.getDispatcher());
+        CommandSurvival.LOGGER.debug("Registered Market Command");
     }
 }

@@ -8,7 +8,6 @@ public interface MarketableItemInterface {
     static Money getSellPrice(
             Money basePrice,
             double circulation,
-            double startingCirculation,
             @Nullable Integer scaleQuantity,
             @Nullable Money priceFloor,
             @Nullable Money priceCeiling
@@ -17,7 +16,8 @@ public interface MarketableItemInterface {
             return basePrice;
         }
         
-        double scale = circulation / (scaleQuantity + startingCirculation);
+        double scale = circulation / scaleQuantity;
+        double realScale = scale - circulation;
         double realPrice = basePrice.getRaw() * Math.pow(0.5, scale);
 
         if (priceFloor != null) {

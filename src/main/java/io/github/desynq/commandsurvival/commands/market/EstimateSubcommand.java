@@ -32,6 +32,7 @@ public class EstimateSubcommand {
             return;
         }
         estimate = marketableItem.estimate(days);
+        messageEstimate();
     }
 
     private void messageInvalidMarketableItem() {

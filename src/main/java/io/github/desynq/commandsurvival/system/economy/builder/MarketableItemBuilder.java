@@ -19,7 +19,6 @@ public class MarketableItemBuilder implements
         ScaleQuantityStep,
         PriceFloorStep,
         PriceCeilingStep,
-        StartingCirculationStep,
         BuildStep
 {
     public ItemStack itemStack;
@@ -82,16 +81,8 @@ public class MarketableItemBuilder implements
     }
 
     @Override
-    public StartingCirculationStep setPriceCeiling(@Nullable Money priceCeiling) {
+    public BuildStep setPriceCeiling(@Nullable Money priceCeiling) {
         this.priceCeiling = priceCeiling;
-        return this;
-    }
-
-    @Override
-    public BuildStep setStartingCirculation(@Nullable Double startingCirculation) {
-        if (startingCirculation != null) {
-            this.startingCirculation = startingCirculation;
-        }
         return this;
     }
 

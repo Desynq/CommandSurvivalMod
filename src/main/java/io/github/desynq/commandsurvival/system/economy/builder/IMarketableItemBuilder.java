@@ -39,11 +39,7 @@ public interface IMarketableItemBuilder {
     }
 
     interface PriceCeilingStep {
-        IMarketableItemBuilder.StartingCirculationStep setPriceCeiling(Money priceCeiling);
-    }
-
-    interface StartingCirculationStep {
-        IMarketableItemBuilder.BuildStep setStartingCirculation(Double startingCirculation);
+        IMarketableItemBuilder.BuildStep setPriceCeiling(Money priceCeiling);
     }
 
     interface BuildStep {

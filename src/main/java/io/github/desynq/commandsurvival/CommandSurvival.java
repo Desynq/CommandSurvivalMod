@@ -1,6 +1,7 @@
 package io.github.desynq.commandsurvival;
 
 import com.mojang.logging.LogUtils;
+import io.github.desynq.commandsurvival.system.economy.MarketableItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,6 +37,8 @@ public class CommandSurvival
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        MarketableItems.register();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

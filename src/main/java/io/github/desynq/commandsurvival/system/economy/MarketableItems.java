@@ -17,6 +17,7 @@ public class MarketableItems {
             .setScaleQuantity(100)
             .setPriceFloor(Money.fromDollars(25.00))
             .setPriceCeiling(Money.fromDollars(200.00))
-            .setStartingCirculation(500.0)
             .build();
+
+    public static void register() {}
 }
