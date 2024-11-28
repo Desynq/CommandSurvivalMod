@@ -9,8 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <pre>
@@ -59,17 +58,17 @@ public class MarketableItem implements MarketableItemInterface {
         this.buyModifier = builder.buyModifier;
         this.startingCirculation = builder.startingCirculation;
 
-        instances.add(this);
+        instances.put(this.itemName, this);
     }
 
     //------------------------------------------------------------------------------------------------------------------
     // Static Methods and Fields
     //------------------------------------------------------------------------------------------------------------------
 
-    public static Set<MarketableItem> instances = new HashSet<>();
+    private static final Map<String, MarketableItem> instances = new HashMap<>();
 
     public static void diminishAll(double percentage) {
-        instances.forEach(marketableItem -> {
+        instances.forEach((name, marketableItem) -> {
             marketableItem.fluctuateCirculation(percentage);
         });
     }
@@ -77,6 +76,38 @@ public class MarketableItem implements MarketableItemInterface {
     public static double getBiasedFluctuationPercentage() {
         // mean gain/loss = 2.5%
         return MathHelper.getBiasedRandom(0, 0.5, 20);
+    }
+
+    public static Collection<MarketableItem> getMarketableItems() {
+        return instances.values();
+    }
+
+    public static MarketableItem getFromName(String name) {
+        return instances.get(name);
+    }
+
+    public static Set<String> getCategories() {
+        Set<String> categories = new HashSet<>();
+
+        for (MarketableItem marketableItem : getMarketableItems()) {
+            categories.add(marketableItem.itemCategory);
+        }
+        return categories;
+    }
+
+    public static Set<String> getNames() {
+        return instances.keySet();
+    }
+
+    public static Set<String> getNamesFromCategory(String category) {
+        Set<String> itemNames = new HashSet<>();
+
+        for (MarketableItem marketableItem : getMarketableItems()) {
+            if (marketableItem.itemCategory.equals(category)) {
+                itemNames.add(marketableItem.itemName);
+            }
+        }
+        return itemNames;
     }
 
     //------------------------------------------------------------------------------------------------------------------
