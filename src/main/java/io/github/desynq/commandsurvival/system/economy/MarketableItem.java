@@ -1,8 +1,6 @@
 package io.github.desynq.commandsurvival.system.economy;
 
-import io.github.desynq.commandsurvival.CommandSurvival;
 import io.github.desynq.commandsurvival.system.economy.builder.MarketableItemBuilder;
-import io.github.desynq.commandsurvival.util.MathHelper;
 import io.github.desynq.commandsurvival.util.data.money.Money;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -27,7 +25,7 @@ import java.util.*;
  *   - Conversely, how many of the item needs to be bought for the price to increase by 100%
  * </pre>
  */
-public class MarketableItem implements MarketableItemInterface {
+public class MarketableItem {
     //------------------------------------------------------------------------------------------------------------------
     // Instance Fields
     //------------------------------------------------------------------------------------------------------------------
@@ -70,11 +68,6 @@ public class MarketableItem implements MarketableItemInterface {
         instances.forEach((name, marketableItem) -> {
             marketableItem.fluctuateCirculation(percentage);
         });
-    }
-
-    public static double getBiasedFluctuationPercentage() {
-        // mean gain/loss = 2.5%
-        return MathHelper.getBiasedRandom(0, 0.5, 20);
     }
 
     public static Collection<MarketableItem> getMarketableItems() {
@@ -126,15 +119,8 @@ public class MarketableItem implements MarketableItemInterface {
     }
 
     public void fluctuateCirculation(double percentage) {
-        double fluctuatedCirculation = getFluctuatedCirculation(getCirculation(), percentage);
+        double fluctuatedCirculation = MarketHelper.getFluctuatedCirculation(getCirculation(), percentage);
         setCirculation(fluctuatedCirculation);
-    }
-
-    /**
-     * Extracted code from fluctuateCirculation() to allow for isolated simulation
-     */
-    public static double getFluctuatedCirculation(double circulation, double percentage) {
-        return circulation * (1 + (circulation < 0 ? 1 : -1) * percentage);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -142,7 +128,7 @@ public class MarketableItem implements MarketableItemInterface {
     //------------------------------------------------------------------------------------------------------------------
 
     public Money getSellPrice() {
-        return MarketableItemInterface.getSellPrice(
+        return MarketHelper.getSellPrice(
                 basePrice,
                 getCirculation(),
                 scaleQuantity,
@@ -171,11 +157,11 @@ public class MarketableItem implements MarketableItemInterface {
         double percentage;
 
         for (int day = days; day >= 0; day--) {
-            percentage = getBiasedFluctuationPercentage();
-            circulation = getFluctuatedCirculation(circulation, percentage);
+            percentage = MarketHelper.getBiasedFluctuationPercentage();
+            circulation = MarketHelper.getFluctuatedCirculation(circulation, percentage);
         }
 
-        return MarketableItemInterface.getSellPrice(
+        return MarketHelper.getSellPrice(
                 basePrice,
                 circulation,
                 scaleQuantity,
