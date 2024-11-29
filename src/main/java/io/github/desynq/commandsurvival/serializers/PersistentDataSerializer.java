@@ -1,6 +1,6 @@
-package io.github.desynq.commandsurvival.util.data;
+package io.github.desynq.commandsurvival.serializers;
 
-import io.github.desynq.commandsurvival.util.ServerHelper;
+import io.github.desynq.commandsurvival.helpers.ServerHelper;
 import net.minecraft.nbt.CompoundTag;
 
 public abstract class PersistentDataSerializer {

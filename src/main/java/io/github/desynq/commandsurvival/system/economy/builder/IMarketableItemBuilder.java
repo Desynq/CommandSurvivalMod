@@ -1,7 +1,7 @@
 package io.github.desynq.commandsurvival.system.economy.builder;
 
 import io.github.desynq.commandsurvival.system.economy.MarketableItem;
-import io.github.desynq.commandsurvival.util.data.money.Money;
+import io.github.desynq.commandsurvival.data.Money;
 import net.minecraft.world.item.ItemStack;
 
 public interface IMarketableItemBuilder {

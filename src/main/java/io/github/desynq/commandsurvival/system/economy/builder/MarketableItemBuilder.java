@@ -2,7 +2,7 @@ package io.github.desynq.commandsurvival.system.economy.builder;
 
 import io.github.desynq.commandsurvival.system.economy.MarketableItem;
 import io.github.desynq.commandsurvival.system.economy.MarketableItemPredicate;
-import io.github.desynq.commandsurvival.util.data.money.Money;
+import io.github.desynq.commandsurvival.data.Money;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

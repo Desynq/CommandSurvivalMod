@@ -1,7 +1,7 @@
 package io.github.desynq.commandsurvival.commands.admin;
 
-import io.github.desynq.commandsurvival.util.MagicValues;
-import io.github.desynq.commandsurvival.util.ServerHelper;
+import io.github.desynq.commandsurvival.data.MagicValues;
+import io.github.desynq.commandsurvival.helpers.ServerHelper;
 import io.github.desynq.commandsurvival.util.TaskScheduler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;

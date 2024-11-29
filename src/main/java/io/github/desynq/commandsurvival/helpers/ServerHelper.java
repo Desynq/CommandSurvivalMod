@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.util;
+package io.github.desynq.commandsurvival.helpers;
 
 import dev.latvian.mods.kubejs.core.MinecraftServerKJS;
 import io.github.desynq.commandsurvival.CommandSurvival;

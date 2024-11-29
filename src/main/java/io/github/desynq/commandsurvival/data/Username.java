@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.util.data;
+package io.github.desynq.commandsurvival.data;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;

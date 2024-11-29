@@ -1,8 +1,6 @@
 package io.github.desynq.commandsurvival.system.economy;
 
-import io.github.desynq.commandsurvival.util.MathHelper;
-import io.github.desynq.commandsurvival.util.data.money.Money;
-import org.jetbrains.annotations.Nullable;
+import io.github.desynq.commandsurvival.helpers.MathHelper;
 
 public class MarketHelper {
 

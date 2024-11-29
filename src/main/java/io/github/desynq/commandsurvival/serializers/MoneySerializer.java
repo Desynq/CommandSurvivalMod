@@ -1,14 +1,15 @@
-package io.github.desynq.commandsurvival.util.data.money;
+package io.github.desynq.commandsurvival.serializers;
 
-import io.github.desynq.commandsurvival.util.data.PersistentDataSerializer;
+import io.github.desynq.commandsurvival.data.Money;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Package-only
+ * Serializes an entity's money into the server by storing it with their stringUUID
+ * Deserializes an entity's money from the server by retrieving it via their stringUUID
  */
-class MoneySerializer extends PersistentDataSerializer {
+public class MoneySerializer extends PersistentDataSerializer {
     private static final MoneySerializer INSTANCE = new MoneySerializer();
 
     @Override

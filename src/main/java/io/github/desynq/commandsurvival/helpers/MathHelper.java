@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.util;
+package io.github.desynq.commandsurvival.helpers;
 
 public class MathHelper {
 

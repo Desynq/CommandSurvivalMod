@@ -4,16 +4,11 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.desynq.commandsurvival.system.economy.MarketableItem;
-import io.github.desynq.commandsurvival.util.data.money.Money;
-import net.minecraft.ChatFormatting;
+import io.github.desynq.commandsurvival.data.Money;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
-
-import static net.minecraft.ChatFormatting.*;
 
 public class EstimateSubcommand {
     private final int days;

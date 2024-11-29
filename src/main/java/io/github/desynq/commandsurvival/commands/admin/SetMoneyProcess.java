@@ -2,9 +2,9 @@ package io.github.desynq.commandsurvival.commands.admin;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.desynq.commandsurvival.util.data.Username;
-import io.github.desynq.commandsurvival.util.data.money.Money;
-import io.github.desynq.commandsurvival.util.data.money.MoneyHelper;
+import io.github.desynq.commandsurvival.data.Username;
+import io.github.desynq.commandsurvival.data.Money;
+import io.github.desynq.commandsurvival.managers.MoneyManager;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -24,8 +24,8 @@ public class SetMoneyProcess {
             return;
         }
 
-        this.previousMoney = Money.fromStringUUID(username.getStringUUID());
-        MoneyHelper.applyToPlayer(username.getStringUUID(), money);
+        this.previousMoney = MoneyManager.fromStringUUID(username.getStringUUID());
+        MoneyManager.applyToPlayer(username.getStringUUID(), money);
         logSuccess();
     }
 

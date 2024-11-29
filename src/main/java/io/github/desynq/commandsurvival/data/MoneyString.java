@@ -1,7 +1,10 @@
-package io.github.desynq.commandsurvival.util.data.money;
+package io.github.desynq.commandsurvival.data;
 
+/**
+ * A string representation of money
+ */
 public class MoneyString {
-    private String moneyString;
+    private final String moneyString;
 
     public MoneyString(String moneyString) {
         this.moneyString = moneyString;

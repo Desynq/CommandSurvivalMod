@@ -4,8 +4,9 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.desynq.commandsurvival.util.data.money.Money;
-import io.github.desynq.commandsurvival.util.data.Username;
+import io.github.desynq.commandsurvival.data.Money;
+import io.github.desynq.commandsurvival.data.Username;
+import io.github.desynq.commandsurvival.managers.MoneyManager;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +38,7 @@ class Admin$Money {
 
     private static int getMoney(CommandContext<CommandSourceStack> command) {
         Username username = new Username(command, "username");
-        Money money = Money.fromStringUUID(username.getStringUUID());
+        Money money = MoneyManager.fromStringUUID(username.getStringUUID());
 
         Player player = command.getSource().getPlayer();
         if (player != null) {

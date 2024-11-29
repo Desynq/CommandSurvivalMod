@@ -1,6 +1,6 @@
 package io.github.desynq.commandsurvival.system.economy;
 
-import io.github.desynq.commandsurvival.util.data.money.Money;
+import io.github.desynq.commandsurvival.data.Money;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

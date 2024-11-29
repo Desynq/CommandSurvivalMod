@@ -1,7 +1,13 @@
-package io.github.desynq.commandsurvival.util.data.money;
+package io.github.desynq.commandsurvival.data;
 
-import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * Data element for money
+ * Handles converting types into money and vice versa
+ * Also has basic methods for manipulating money as a value
+ */
 public class Money {
     private long money;
 
@@ -23,35 +29,31 @@ public class Money {
     /**
      * Always rounds up
      */
-    public static Money fromCents(double cents) {
+    @Contract("_ -> new")
+    public static @NotNull Money fromCents(double cents) {
         return new Money((long) Math.ceil(cents));
     }
 
-    public static Money fromDollars(long dollars) {
+    @Contract(value = "_ -> new", pure = true)
+    public static @NotNull Money fromDollars(long dollars) {
         return new Money(dollars * 100);
     }
 
     /**
      * Always rounds up
      */
-    public static Money fromDollars(double dollars) {
+    @Contract("_ -> new")
+    public static @NotNull Money fromDollars(double dollars) {
         return new Money((long) Math.ceil(dollars * 100));
     }
 
-    public static Money fromDollarsAndCents(long dollars, long cents) {
+    @Contract(value = "_, _ -> new", pure = true)
+    public static @NotNull Money fromDollarsAndCents(long dollars, long cents) {
         return new Money((dollars * 100) + cents);
     }
 
     public static Money fromString(String moneyString) {
         return new MoneyString(moneyString).toMoney();
-    }
-
-    public static Money fromStringUUID(String stringUUID) {
-        return MoneySerializer.getMoney(stringUUID);
-    }
-
-    public static Money fromPlayer(Player player) {
-        return fromStringUUID(player.getStringUUID());
     }
 
     //------------------------------------------------------------------------------------------------------------------

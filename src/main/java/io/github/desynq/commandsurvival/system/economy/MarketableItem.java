@@ -1,7 +1,7 @@
 package io.github.desynq.commandsurvival.system.economy;
 
 import io.github.desynq.commandsurvival.system.economy.builder.MarketableItemBuilder;
-import io.github.desynq.commandsurvival.util.data.money.Money;
+import io.github.desynq.commandsurvival.data.Money;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -116,13 +116,5 @@ public class MarketableItem extends Marketable {
     public void fluctuateCirculation(double percentage) {
         double fluctuatedCirculation = MarketHelper.getFluctuatedCirculation(getCirculation(), percentage);
         setCirculation(fluctuatedCirculation);
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    // Side Effects
-    //------------------------------------------------------------------------------------------------------------------
-
-    public boolean buy(@NotNull Player player) {
-        return true;
     }
 }
