@@ -15,8 +15,8 @@ import java.util.Set;
  * Idea is that usernames are non-unique due to player name changes whereas UUIDs are unique and cannot be changed by
  * the player, therefore there is a many-to-one relationship between usernames and UUIDs. Because of this, keys should
  * be usernames while values should be UUIDs.
- *
  * This data is mostly useful for when accessing offline data pertinent to a player.
+ * TODO: Make this not a god class
  */
 @Mod.EventBusSubscriber(modid = CommandSurvival.MODID)
 public class UsernameUUIDMap {
