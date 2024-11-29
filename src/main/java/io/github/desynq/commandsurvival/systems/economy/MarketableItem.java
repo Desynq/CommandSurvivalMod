@@ -1,7 +1,7 @@
 package io.github.desynq.commandsurvival.systems.economy;
 
 import io.github.desynq.commandsurvival.helpers.MarketHelper;
-import io.github.desynq.commandsurvival.systems.economy.builder.MarketableItemBuilder;
+import io.github.desynq.commandsurvival.systems.economy.builders.MarketableItemBuilder;
 import io.github.desynq.commandsurvival.data.Money;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;

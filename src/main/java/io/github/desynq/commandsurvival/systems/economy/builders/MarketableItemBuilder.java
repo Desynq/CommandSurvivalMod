@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.systems.economy.builder;
+package io.github.desynq.commandsurvival.systems.economy.builders;
 
 import io.github.desynq.commandsurvival.systems.economy.MarketableItem;
 import io.github.desynq.commandsurvival.systems.economy.MarketableItemPredicate;
@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.desynq.commandsurvival.systems.economy.builder.IMarketableItemBuilder.*;
+import static io.github.desynq.commandsurvival.systems.economy.builders.IMarketableItemBuilder.*;
 
 public class MarketableItemBuilder implements
         ItemStackStep,
