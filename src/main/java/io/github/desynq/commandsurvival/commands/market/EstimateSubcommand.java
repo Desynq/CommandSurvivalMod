@@ -3,7 +3,7 @@ package io.github.desynq.commandsurvival.commands.market;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.desynq.commandsurvival.systems.economy.MarketableItem;
+import io.github.desynq.commandsurvival.systems.market.MarketableItem;
 import io.github.desynq.commandsurvival.data.Money;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;

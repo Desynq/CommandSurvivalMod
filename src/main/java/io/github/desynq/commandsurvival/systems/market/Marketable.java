@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.systems.economy;
+package io.github.desynq.commandsurvival.systems.market;
 
 import io.github.desynq.commandsurvival.data.Money;
 import io.github.desynq.commandsurvival.helpers.MarketHelper;

@@ -1,7 +1,7 @@
 package io.github.desynq.commandsurvival;
 
 import com.mojang.logging.LogUtils;
-import io.github.desynq.commandsurvival.systems.economy.MarketableItems;
+import io.github.desynq.commandsurvival.systems.market.MarketableItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;

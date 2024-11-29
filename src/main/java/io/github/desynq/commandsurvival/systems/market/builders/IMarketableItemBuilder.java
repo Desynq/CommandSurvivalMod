@@ -1,6 +1,6 @@
-package io.github.desynq.commandsurvival.systems.economy.builders;
+package io.github.desynq.commandsurvival.systems.market.builders;
 
-import io.github.desynq.commandsurvival.systems.economy.MarketableItem;
+import io.github.desynq.commandsurvival.systems.market.MarketableItem;
 import io.github.desynq.commandsurvival.data.Money;
 import net.minecraft.world.item.ItemStack;
 
