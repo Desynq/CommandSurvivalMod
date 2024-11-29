@@ -49,7 +49,7 @@ public class EstimateSubcommand {
                 "§7Item §e`%s`§7 is estimated to have a sell price of §a%s§7 after §e%s§7 days.",
                 itemName,
                 estimate.getDollarString(),
-                String.valueOf(days)
+                days
         )));
     }
 
