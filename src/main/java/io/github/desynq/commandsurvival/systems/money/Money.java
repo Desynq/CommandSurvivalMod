@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Data element for money
  * Handles converting types into money and vice versa
- * Also has basic methods for manipulating money as a value
+ * Also has basic methods for performing operations on money mathematically
  */
 public class Money {
     private long money;
