@@ -88,12 +88,4 @@ public class Money {
     public Money add(Money moneyToAdd) {
         return add(moneyToAdd.money);
     }
-
-    //------------------------------------------------------------------------------------------------------------------
-    // SIDE EFFECTS
-    //------------------------------------------------------------------------------------------------------------------
-
-    public void applyToPlayer(String uuidString) {
-        MoneySerializer.setMoney(uuidString, this);
-    }
 }

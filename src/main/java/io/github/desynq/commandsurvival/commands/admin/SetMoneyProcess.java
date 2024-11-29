@@ -4,6 +4,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.desynq.commandsurvival.util.data.Username;
 import io.github.desynq.commandsurvival.util.data.money.Money;
+import io.github.desynq.commandsurvival.util.data.money.MoneyHelper;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +25,7 @@ public class SetMoneyProcess {
         }
 
         this.previousMoney = Money.fromStringUUID(username.getStringUUID());
-        money.applyToPlayer(username.getStringUUID());
+        MoneyHelper.applyToPlayer(username.getStringUUID(), money);
         logSuccess();
     }
 
