@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.data;
+package io.github.desynq.commandsurvival.systems.money;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

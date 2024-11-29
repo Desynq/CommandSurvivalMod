@@ -1,7 +1,7 @@
 package io.github.desynq.commandsurvival.managers;
 
 import io.github.desynq.commandsurvival.serializers.MoneySerializer;
-import io.github.desynq.commandsurvival.data.Money;
+import io.github.desynq.commandsurvival.systems.money.Money;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

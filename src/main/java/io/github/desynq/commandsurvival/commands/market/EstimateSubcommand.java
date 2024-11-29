@@ -4,7 +4,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.desynq.commandsurvival.systems.market.MarketableItem;
-import io.github.desynq.commandsurvival.data.Money;
+import io.github.desynq.commandsurvival.systems.money.Money;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;

@@ -1,6 +1,6 @@
 package io.github.desynq.commandsurvival.systems.market;
 
-import io.github.desynq.commandsurvival.data.Money;
+import io.github.desynq.commandsurvival.systems.money.Money;
 import io.github.desynq.commandsurvival.helpers.MarketHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
