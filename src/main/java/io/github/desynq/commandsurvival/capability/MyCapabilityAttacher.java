@@ -16,12 +16,12 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@Mod.EventBusSubscriber(modid = CommandSurvival.MODID)
+@Mod.EventBusSubscriber(modid = CommandSurvival.MOD_ID)
 public class MyCapabilityAttacher {
 
     private static class MyCapabilityProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-        public static final ResourceLocation IDENTIFIER = new ResourceLocation(CommandSurvival.MODID, "mycap");
+        public static final ResourceLocation IDENTIFIER = new ResourceLocation(CommandSurvival.MOD_ID, "mycap");
 
         private final MyCapabilityInterface backend = new MyCapabilityImplementation();
         private final LazyOptional<MyCapabilityInterface> optionalData = LazyOptional.of(() -> backend);

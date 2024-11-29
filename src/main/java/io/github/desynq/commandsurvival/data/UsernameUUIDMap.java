@@ -18,7 +18,7 @@ import java.util.Set;
  * This data is mostly useful for when accessing offline data pertinent to a player.
  * TODO: Make this not a god class
  */
-@Mod.EventBusSubscriber(modid = CommandSurvival.MODID)
+@Mod.EventBusSubscriber(modid = CommandSurvival.MOD_ID)
 public class UsernameUUIDMap {
     private static final String USERNAME_UUID_MAP = "username_to_uuid_map";
 

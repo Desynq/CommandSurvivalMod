@@ -11,7 +11,7 @@ import java.util.PriorityQueue;
 import java.util.UUID;
 
 // https://github.com/Spaxterr/lynxlib/blob/e4de122d44abd912a37e4a43f351306db4a129aa/src/main/java/dev/spaxter/lynxlib/task/TaskScheduler.java#L11
-@Mod.EventBusSubscriber(modid = CommandSurvival.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = CommandSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TaskScheduler {
 
     private static final PriorityQueue<DelayedTask> taskQueue = new PriorityQueue<>();
