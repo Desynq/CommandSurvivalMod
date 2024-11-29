@@ -5,6 +5,12 @@ import io.github.desynq.commandsurvival.helpers.MarketHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Data type that allows for getting sell and buy price<br>
+ * - Requires some basic parameters for the instance itself<br>
+ * - Some methods require circulation which is retrieved externally
+ * (usually tied to an instance of {@link MarketableItem})
+ */
 public class Marketable {
     private final @Nullable Integer scaleQuantity;
     private final @NotNull Money basePrice;
