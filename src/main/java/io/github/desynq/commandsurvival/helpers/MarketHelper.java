@@ -1,6 +1,4 @@
-package io.github.desynq.commandsurvival.system.economy;
-
-import io.github.desynq.commandsurvival.helpers.MathHelper;
+package io.github.desynq.commandsurvival.helpers;
 
 public class MarketHelper {
 

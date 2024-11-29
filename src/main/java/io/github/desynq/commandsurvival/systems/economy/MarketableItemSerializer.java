@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.system.economy;
+package io.github.desynq.commandsurvival.systems.economy;
 
 import io.github.desynq.commandsurvival.serializers.PersistentDataSerializer;
 import net.minecraft.nbt.CompoundTag;

@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.system.economy;
+package io.github.desynq.commandsurvival.systems.economy;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;

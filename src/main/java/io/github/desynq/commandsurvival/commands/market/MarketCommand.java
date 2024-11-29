@@ -7,7 +7,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import io.github.desynq.commandsurvival.system.economy.MarketableItem;
+import io.github.desynq.commandsurvival.systems.economy.MarketableItem;
 import net.minecraft.commands.CommandSourceStack;
 
 import java.util.concurrent.CompletableFuture;
