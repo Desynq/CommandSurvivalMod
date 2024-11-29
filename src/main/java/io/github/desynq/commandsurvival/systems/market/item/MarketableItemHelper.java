@@ -8,4 +8,9 @@ public class MarketableItemHelper {
     public static double generateFluctuationPercentage() {
         return MathHelper.getBiasedRandom(0, 0.5, 20);
     }
+
+    public static double getFluctuatedCirculation(double circulation, double percentage) {
+        int i = circulation < 0 ? 1 : -1;
+        return circulation * (1 + i * percentage);
+    }
 }

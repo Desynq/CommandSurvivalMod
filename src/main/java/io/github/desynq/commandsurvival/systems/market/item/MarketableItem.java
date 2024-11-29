@@ -12,18 +12,11 @@ import org.jetbrains.annotations.Nullable;
  * Ties {@link Marketable} to an item with {@link MarketableItem#itemStack}
  */
 public class MarketableItem extends Marketable {
-    //------------------------------------------------------------------------------------------------------------------
-    // Instance Fields
-    //------------------------------------------------------------------------------------------------------------------
 
     public final @NotNull ItemStack itemStack;
     public final @NotNull String itemCategory;
     public final @NotNull String itemName;
     public final @Nullable MarketableItemPredicate<Player, CompoundTag> marketableItemPredicate;
-
-    //------------------------------------------------------------------------------------------------------------------
-    // Constructors
-    //------------------------------------------------------------------------------------------------------------------
 
     public MarketableItem(@NotNull MarketableItemBuilder builder) {
         super(builder.getBaseComponents());
@@ -52,14 +45,13 @@ public class MarketableItem extends Marketable {
     }
 
     public void fluctuateCirculation(double percentage) {
-        setCirculation(getFluctuatedCirculation(percentage));
+        double newCirculation = MarketableItemHelper.getFluctuatedCirculation(getCirculation(), percentage);
+        setCirculation(newCirculation);
     }
 
-    public double getFluctuatedCirculation(double percentage) {
-        double circulation = getCirculation();
-        int i = circulation < 0 ? 1 : -1;
-        return circulation * (1 + i * percentage);
-    }
+    //------------------------------------------------------------------------------------------------------------------
+    // Estimation
+    //------------------------------------------------------------------------------------------------------------------
 
     public Money estimateSellPrice(int days) {
         double circulation = getCirculation();
@@ -67,7 +59,7 @@ public class MarketableItem extends Marketable {
 
         for (int day = days; day >= 0; day--) {
             percentage = MarketableItemHelper.generateFluctuationPercentage();
-            circulation = getFluctuatedCirculation(percentage);
+            circulation = MarketableItemHelper.getFluctuatedCirculation(circulation, percentage);
         }
         return getSellPrice(circulation);
     }
