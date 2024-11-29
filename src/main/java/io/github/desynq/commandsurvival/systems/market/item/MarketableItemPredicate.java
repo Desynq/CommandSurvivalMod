@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.systems.market;
+package io.github.desynq.commandsurvival.systems.market.item;
 
 @FunctionalInterface
 public interface MarketableItemPredicate<Player, CompoundTag> {

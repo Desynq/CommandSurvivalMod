@@ -1,14 +1,13 @@
-package io.github.desynq.commandsurvival.systems.market.builders;
+package io.github.desynq.commandsurvival.systems.market.item;
 
-import io.github.desynq.commandsurvival.systems.market.MarketableItem;
-import io.github.desynq.commandsurvival.systems.market.MarketableItemPredicate;
+import io.github.desynq.commandsurvival.systems.market.MarketableRecord;
 import io.github.desynq.commandsurvival.systems.money.Money;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.desynq.commandsurvival.systems.market.builders.IMarketableItemBuilder.*;
+import static io.github.desynq.commandsurvival.systems.market.item.MarketableItemBuilderInterface.*;
 
 public class MarketableItemBuilder implements
         ItemStackStep,
@@ -25,12 +24,11 @@ public class MarketableItemBuilder implements
     public Money basePrice;
     public String itemCategory;
     public String itemName;
-    public @Nullable MarketableItemPredicate<Player, CompoundTag> predicate;
+    public @Nullable MarketableItemPredicate<Player, CompoundTag> marketableItemPredicate;
     public @Nullable Integer scaleQuantity;
     public @Nullable Money priceFloor;
     public @Nullable Money priceCeiling;
     public @Nullable Double buyModifier;
-    public double startingCirculation = 0.0;
 
     private MarketableItemBuilder() {}
 
@@ -87,7 +85,24 @@ public class MarketableItemBuilder implements
     }
 
     @Override
-    public MarketableItem build() {
-        return new MarketableItem(this);
+    public MarketableItem build(boolean shouldBeManaged) {
+        MarketableItem marketableItem = new MarketableItem(this);
+        if (!shouldBeManaged) {
+            return marketableItem;
+        }
+
+        boolean notDuplicate = MarketableItemInstancesManager.addInstance(marketableItem);
+        if (!notDuplicate) {
+            throw new IllegalArgumentException(String.format("Marketable item with name %s is already being managed", this.itemName));
+        }
+        return marketableItem;
+    }
+
+    /**
+     *
+     * @return Record of components needed in order to initialize superclass of the MarketableItem
+     */
+    public MarketableRecord getBaseComponents() {
+        return new MarketableRecord(basePrice, scaleQuantity, priceFloor, priceCeiling, buyModifier);
     }
 }

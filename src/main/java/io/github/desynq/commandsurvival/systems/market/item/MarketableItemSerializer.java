@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.systems.market;
+package io.github.desynq.commandsurvival.systems.market.item;
 
 import io.github.desynq.commandsurvival.serializers.PersistentDataSerializer;
 import net.minecraft.nbt.CompoundTag;

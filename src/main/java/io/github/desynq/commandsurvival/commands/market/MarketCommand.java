@@ -7,7 +7,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import io.github.desynq.commandsurvival.systems.market.MarketableItem;
+import io.github.desynq.commandsurvival.systems.market.item.MarketableItemInstancesManager;
 import net.minecraft.commands.CommandSourceStack;
 
 import java.util.concurrent.CompletableFuture;
@@ -59,13 +59,13 @@ public class MarketCommand {
 
 
     private static CompletableFuture<Suggestions> suggestItemCategory(CommandContext<CommandSourceStack> command, SuggestionsBuilder builder) {
-        MarketableItem.getCategories().forEach(builder::suggest);
+        MarketableItemInstancesManager.getCategories().forEach(builder::suggest);
         return builder.buildFuture();
     }
 
     private static CompletableFuture<Suggestions> suggestItemName(CommandContext<CommandSourceStack> command, SuggestionsBuilder builder) {
         String category = StringArgumentType.getString(command, "item_category");
-        MarketableItem.getNamesFromCategory(category).forEach(builder::suggest);
+        MarketableItemInstancesManager.getNamesFromCategory(category).forEach(builder::suggest);
         return builder.buildFuture();
     }
 }

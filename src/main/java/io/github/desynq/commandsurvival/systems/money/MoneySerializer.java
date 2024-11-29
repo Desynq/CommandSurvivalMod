@@ -1,6 +1,6 @@
-package io.github.desynq.commandsurvival.serializers;
+package io.github.desynq.commandsurvival.systems.money;
 
-import io.github.desynq.commandsurvival.systems.money.Money;
+import io.github.desynq.commandsurvival.serializers.PersistentDataSerializer;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

@@ -6,7 +6,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.desynq.commandsurvival.systems.money.Money;
 import io.github.desynq.commandsurvival.data.Username;
-import io.github.desynq.commandsurvival.managers.MoneyManager;
+import io.github.desynq.commandsurvival.systems.money.MoneyManager;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;

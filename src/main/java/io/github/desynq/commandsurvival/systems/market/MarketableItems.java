@@ -1,6 +1,7 @@
 package io.github.desynq.commandsurvival.systems.market;
 
-import io.github.desynq.commandsurvival.systems.market.builders.MarketableItemBuilder;
+import io.github.desynq.commandsurvival.systems.market.item.MarketableItem;
+import io.github.desynq.commandsurvival.systems.market.item.MarketableItemBuilder;
 import io.github.desynq.commandsurvival.systems.money.Money;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -17,7 +18,7 @@ public class MarketableItems {
             .setScaleQuantity(100)
             .setPriceFloor(Money.fromDollars(25.00))
             .setPriceCeiling(Money.fromDollars(200.00))
-            .build();
+            .build(true);
 
     public static void register() {}
 }

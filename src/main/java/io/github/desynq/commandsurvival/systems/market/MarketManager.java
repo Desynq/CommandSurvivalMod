@@ -1,4 +1,4 @@
-package io.github.desynq.commandsurvival.managers;
+package io.github.desynq.commandsurvival.systems.market;
 
 /**
  * Manages transactions via the market system
