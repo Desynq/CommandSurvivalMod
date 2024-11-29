@@ -11,51 +11,46 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * <pre>
- * Defined by:
- * - {@link MarketableItem#itemStack}
- *   - ID is used to determine whether the player can sell the item or not
- *   - ID and NBT is used for giving the item with its NBT to the player
- * - {@link MarketableItem#basePrice}
- *   - Determines the base price of the marketable item
- * - {@link MarketableItem#predicate}
- *   - Optionally used to determine whether the player can sell the item if it matches the provided NBT tag
- * - {@link MarketableItem#scaleQuantity}
- *   - How many of the item needs to be sold for the price to decrease by 50%
- *   - Conversely, how many of the item needs to be bought for the price to increase by 100%
- * </pre>
+ * Ties {@link Marketable} to an item with {@link MarketableItem#itemStack}
  */
-public class MarketableItem {
+public class MarketableItem extends Marketable {
     //------------------------------------------------------------------------------------------------------------------
     // Instance Fields
     //------------------------------------------------------------------------------------------------------------------
 
     public final @NotNull ItemStack itemStack;
-    public final @NotNull Money basePrice;
     public final @NotNull String itemCategory;
     public final @NotNull String itemName;
     public final @Nullable MarketableItemPredicate<Player, CompoundTag> predicate;
-    public final @Nullable Integer scaleQuantity;
-    public final @Nullable Money priceFloor;
-    public final @Nullable Money priceCeiling;
-    public final @Nullable Double buyModifier;
 
     //------------------------------------------------------------------------------------------------------------------
     // Constructors
     //------------------------------------------------------------------------------------------------------------------
 
     public MarketableItem(@NotNull MarketableItemBuilder builder) {
+        super(builder.basePrice, builder.scaleQuantity, builder.priceFloor, builder.priceCeiling, builder.buyModifier);
         this.itemStack = builder.itemStack;
-        this.basePrice = builder.basePrice;
         this.predicate = builder.predicate;
-        this.scaleQuantity = builder.scaleQuantity;
         this.itemCategory = builder.itemCategory;
         this.itemName = builder.itemName;
-        this.priceFloor = builder.priceFloor;
-        this.priceCeiling = builder.priceCeiling;
-        this.buyModifier = builder.buyModifier;
 
         instances.put(this.itemName, this);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Inheritance
+    //------------------------------------------------------------------------------------------------------------------
+
+    public Money getSellPrice() {
+        return getSellPrice(getCirculation());
+    }
+
+    public Money getBuyPrice() {
+        return getBuyPrice(getCirculation());
+    }
+
+    public Money estimate(int days) {
+        return estimate(days, getCirculation());
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -74,7 +69,7 @@ public class MarketableItem {
         return instances.values();
     }
 
-    public static MarketableItem getFromName(String name) {
+    public static @Nullable MarketableItem getFromName(String name) {
         return instances.get(name);
     }
 
@@ -124,57 +119,10 @@ public class MarketableItem {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    // Pricing
-    //------------------------------------------------------------------------------------------------------------------
-
-    public Money getSellPrice() {
-        return MarketHelper.getSellPrice(
-                basePrice,
-                getCirculation(),
-                scaleQuantity,
-                priceFloor,
-                priceCeiling
-        );
-    }
-
-    /**
-     * max = priceCeiling * buyModifier<br>
-     * min = priceFloor * buyModifier
-     */
-    public Money getBuyPrice() {
-        if (buyModifier == null || buyModifier < 1) {
-            return null; // item is not buyable
-        }
-        double realPrice = getSellPrice().getRaw() * buyModifier;
-        return Money.fromCents(realPrice);
-    }
-
-    /**
-     * Estimates what the item's circulation might be after x amount of days
-     */
-    public Money estimate(int days) {
-        double circulation = getCirculation();
-        double percentage;
-
-        for (int day = days; day >= 0; day--) {
-            percentage = MarketHelper.getBiasedFluctuationPercentage();
-            circulation = MarketHelper.getFluctuatedCirculation(circulation, percentage);
-        }
-
-        return MarketHelper.getSellPrice(
-                basePrice,
-                circulation,
-                scaleQuantity,
-                priceFloor,
-                priceCeiling
-        );
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
     // Side Effects
     //------------------------------------------------------------------------------------------------------------------
 
-    public boolean buy(Player player) {
+    public boolean buy(@NotNull Player player) {
         return true;
     }
 }

@@ -24,7 +24,7 @@ public class EstimateSubcommand {
     private EstimateSubcommand(CommandContext<CommandSourceStack> command) {
         days = IntegerArgumentType.getInteger(command, "days");
         itemName = StringArgumentType.getString(command, "item_name");
-        @Nullable MarketableItem marketableItem = MarketableItem.getFromName(itemName);
+        MarketableItem marketableItem = MarketableItem.getFromName(itemName);
         player = command.getSource().getPlayer();
 
         if (marketableItem == null) {
