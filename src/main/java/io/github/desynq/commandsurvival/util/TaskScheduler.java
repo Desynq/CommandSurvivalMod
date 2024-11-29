@@ -1,6 +1,7 @@
 package io.github.desynq.commandsurvival.util;
 
 import io.github.desynq.commandsurvival.CommandSurvival;
+import io.github.desynq.commandsurvival.helpers.ServerHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -15,7 +16,6 @@ import java.util.UUID;
 public class TaskScheduler {
 
     private static final PriorityQueue<DelayedTask> taskQueue = new PriorityQueue<>();
-    private static MinecraftServer server;
 
     public static void scheduleTask(MinecraftServer server, float delay, Runnable task) {
         TaskScheduler.scheduleTask(server, delay, task, UUID.randomUUID());
@@ -58,7 +58,7 @@ public class TaskScheduler {
     public static void onTick(TickEvent.ServerTickEvent event) {
         synchronized (taskQueue) {
             if (event.phase == TickEvent.Phase.END && !taskQueue.isEmpty()) {
-                long currentTick = server.getTickCount();
+                long currentTick = ServerHelper.server.getTickCount();
 
                 while (!taskQueue.isEmpty() && taskQueue.peek().executionTick <= currentTick) {
                     DelayedTask taskToRun = taskQueue.poll();
@@ -66,12 +66,6 @@ public class TaskScheduler {
                 }
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void onServerStart(ServerStartingEvent event) {
-        server = event.getServer();
-        CommandSurvival.LOGGER.debug("Started Task Scheduler");
     }
 
 
