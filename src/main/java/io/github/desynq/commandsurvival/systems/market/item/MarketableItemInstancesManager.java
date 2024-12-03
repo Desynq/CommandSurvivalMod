@@ -28,8 +28,8 @@ public class MarketableItemInstancesManager {
         return instances.values();
     }
 
-    public static @Nullable MarketableItem getFromName(String name) {
-        return instances.get(name);
+    public static Optional<MarketableItem> getFromName(String name) {
+        return Optional.ofNullable(instances.get(name));
     }
 
     public static @NotNull Set<String> getCategories() {

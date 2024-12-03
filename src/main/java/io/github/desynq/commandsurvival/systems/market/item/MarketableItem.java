@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import oshi.util.tuples.Pair;
 
 /**
  * Ties {@link Marketable} to an item with {@link MarketableItem#itemStack}
@@ -53,7 +54,7 @@ public class MarketableItem extends Marketable {
     // Estimation
     //------------------------------------------------------------------------------------------------------------------
 
-    public Money estimateSellPrice(int days) {
+    public EstimateResult estimateSellPrice(int days) {
         double circulation = getCirculation();
         double percentage;
 
@@ -61,6 +62,12 @@ public class MarketableItem extends Marketable {
             percentage = MarketableItemHelper.generateFluctuationPercentage();
             circulation = MarketableItemHelper.getFluctuatedCirculation(circulation, percentage);
         }
-        return getSellPrice(circulation);
+        return new EstimateResult(
+                getSellPrice(),
+                getSellPrice(circulation),
+                getCirculation(),
+                circulation,
+                days
+        );
     }
 }

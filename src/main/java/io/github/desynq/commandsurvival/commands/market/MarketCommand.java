@@ -47,6 +47,7 @@ public class MarketCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(literal("market")
+                .requires(CommandSourceStack::isPlayer)
                 .then(literal("item")
                         .then(argument("item_category", StringArgumentType.string())
                                 .suggests(MarketCommand::suggestItemCategory)
@@ -57,13 +58,14 @@ public class MarketCommand {
     }
 
 
-
-    private static CompletableFuture<Suggestions> suggestItemCategory(CommandContext<CommandSourceStack> command, SuggestionsBuilder builder) {
+    private static CompletableFuture<Suggestions> suggestItemCategory(CommandContext<CommandSourceStack> command,
+                                                                      SuggestionsBuilder builder) {
         MarketableItemInstancesManager.getCategories().forEach(builder::suggest);
         return builder.buildFuture();
     }
 
-    private static CompletableFuture<Suggestions> suggestItemName(CommandContext<CommandSourceStack> command, SuggestionsBuilder builder) {
+    private static CompletableFuture<Suggestions> suggestItemName(CommandContext<CommandSourceStack> command,
+                                                                  SuggestionsBuilder builder) {
         String category = StringArgumentType.getString(command, "item_category");
         MarketableItemInstancesManager.getNamesFromCategory(category).forEach(builder::suggest);
         return builder.buildFuture();
