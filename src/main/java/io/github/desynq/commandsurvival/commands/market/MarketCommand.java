@@ -17,7 +17,7 @@ import static net.minecraft.commands.Commands.literal;
 
 public class MarketCommand {
 
-    // market item <item_category> <item_name>
+    // market item <item_category> <item_name> info
     // market item <item_category> <item_name> sell all
     // market item <item_category> <item_name> sell <amount>
     // market item <item_category> <item_name> buy <amount>
@@ -25,24 +25,26 @@ public class MarketCommand {
     private static final RequiredArgumentBuilder<CommandSourceStack, String> ITEM_COMMAND =
             argument("item_name", StringArgumentType.string())
                     .suggests(MarketCommand::suggestItemName)
-                    //.executes()
                     .then(literal("sell")
                             .then(literal("all")
                                     //.executes()
                             )
-                            .then(argument("amount", IntegerArgumentType.integer(0))
+                            .then(argument("amount", IntegerArgumentType.integer(1))
                                     //.executes()
                             )
                     )
                     .then(literal("buy")
-                            .then(argument("amount", IntegerArgumentType.integer(0))
-                                    //.executes()
+                            .then(argument("amount", IntegerArgumentType.integer(1))
+                                    .executes(c -> new BuySubcommand(c).getResult())
                             )
                     )
                     .then(literal("estimate")
                             .then(argument("days", IntegerArgumentType.integer(0))
                                     .executes(EstimateSubcommand::execute)
                             )
+                    )
+                    .then(literal("info")
+                            //.executes()
                     );
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {

@@ -40,17 +40,17 @@ class Admin$Money {
         Username username = new Username(command, "username");
         Money money = MoneyManager.fromStringUUID(username.getStringUUID());
 
-        Player player = command.getSource().getPlayer();
-        if (player != null) {
-            getMoney$message(player, money);
+        Player executor = command.getSource().getPlayer();
+        if (executor != null) {
+            getMoney$message(executor, money, username);
         }
 
         return 1;
     }
-    private static void getMoney$message(@NotNull Player player, Money money) {
-        player.sendSystemMessage(Component.literal("Player ")
+    private static void getMoney$message(@NotNull Player executor, Money money, Username username) {
+        executor.sendSystemMessage(Component.literal("Player ")
                 .withStyle(GRAY)
-                .append(player.getDisplayName())
+                .append(username.toString())
                 .append(
                         Component.literal(" has ")
                                 .withStyle(GRAY)

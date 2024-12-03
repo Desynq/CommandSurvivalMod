@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 
+import java.util.Optional;
+
 /**
  * Ties {@link Marketable} to an item with {@link MarketableItem#itemStack}
  */
@@ -17,7 +19,7 @@ public class MarketableItem extends Marketable {
     public final @NotNull ItemStack itemStack;
     public final @NotNull String itemCategory;
     public final @NotNull String itemName;
-    public final @Nullable MarketableItemPredicate<Player, CompoundTag> marketableItemPredicate;
+    public final MarketableItemPredicate<Player, CompoundTag> marketableItemPredicate;
 
     public MarketableItem(@NotNull MarketableItemBuilder builder) {
         super(builder.getBaseComponents());

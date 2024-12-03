@@ -21,7 +21,8 @@ public class Username {
         return new Username(player.getGameProfile().getName());
     }
 
-    public String get() {
+    @Override
+    public String toString() {
         return username;
     }
 

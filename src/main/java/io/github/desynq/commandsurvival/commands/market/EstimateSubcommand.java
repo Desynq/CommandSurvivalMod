@@ -6,11 +6,10 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.desynq.commandsurvival.systems.market.item.EstimateResult;
 import io.github.desynq.commandsurvival.systems.market.item.MarketableItem;
 import io.github.desynq.commandsurvival.systems.market.item.MarketableItemInstancesManager;
-import io.github.desynq.commandsurvival.util.chat.TranslatableBuilder;
+import io.github.desynq.commandsurvival.util.chat.ComponentBuilder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -41,7 +40,7 @@ public class EstimateSubcommand {
 
     private void handleEstimate(MarketableItem marketableItem) {
         EstimateResult estimate = marketableItem.estimateSellPrice(days);
-        player.sendSystemMessage(new TranslatableBuilder()
+        player.sendSystemMessage(new ComponentBuilder()
                 .next(itemName, BLUE)
                 .next(itemCategory, BLUE)
                 .next(days, YELLOW)
@@ -54,7 +53,7 @@ public class EstimateSubcommand {
     }
 
     private void handleInvalidMarketableItem() {
-        player.sendSystemMessage(new TranslatableBuilder()
+        player.sendSystemMessage(new ComponentBuilder()
                 .next(itemName, BLUE)
                 .next(itemCategory, BLUE)
                 .build("commands.market.estimate.failure.invalid_marketable_item")

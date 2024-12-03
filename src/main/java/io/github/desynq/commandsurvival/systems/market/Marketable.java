@@ -4,6 +4,8 @@ import io.github.desynq.commandsurvival.systems.money.Money;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * A Marketable is something that can be sold as well as optionally
  * bought for a basePrice and is able to have various factors
@@ -14,11 +16,11 @@ import org.jetbrains.annotations.Nullable;
  * order for it to be marketable.
  */
 public abstract class Marketable {
-    private final @NotNull Money basePrice;
-    private final @Nullable Integer scaleQuantity;
-    private final @Nullable Money priceFloor;
-    private final @Nullable Money priceCeiling;
-    private final @Nullable Double buyModifier;
+    public final @NotNull Money basePrice;
+    public final @Nullable Integer scaleQuantity;
+    public final @Nullable Money priceFloor;
+    public final @Nullable Money priceCeiling;
+    public final @Nullable Double buyModifier;
 
     public Marketable(MarketableRecord record) {
         if (record.basePrice().getRaw() <= 0) {
@@ -36,8 +38,8 @@ public abstract class Marketable {
     public abstract void setCirculation(double circulation);
 
 
-
     private static final double SCALING_FACTOR = 0.5;
+
     public Money getSellPrice(double circulation) {
         if (scaleQuantity == null) {
             return basePrice;
@@ -60,15 +62,18 @@ public abstract class Marketable {
         return getSellPrice(getCirculation());
     }
 
-    public Money getBuyPrice(double circulation) {
-        if (buyModifier == null || buyModifier < 1) {
-            return null; // not buyable
+    public Optional<Money> getBuyPrice(double circulation) {
+        if (buyModifier == null) {
+            return Optional.empty(); // not buyable
         }
-        double realPrice = getSellPrice(circulation).getRaw() * buyModifier;
-        return Money.fromCents(realPrice);
+
+        double buyPrice = getSellPrice(circulation).getRaw();
+        return buyModifier < 1 ?
+                Optional.of(Money.fromCents(buyPrice)) :
+                Optional.of(Money.fromCents(buyPrice * buyModifier));
     }
 
-    public Money getBuyPrice() {
+    public Optional<Money> getBuyPrice() {
         return getBuyPrice(getCirculation());
     }
 }

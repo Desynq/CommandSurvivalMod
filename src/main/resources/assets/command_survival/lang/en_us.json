@@ -1,6 +1,6 @@
 {
   "commands.market.estimate.success":
-          "§7Item name `%s` from category `%s` estimation results after %s days:\nInitial circulation was %s, estimated circulation after simulation is %s.\nInitial price was %s, estimated price after simulation is %s.",
+          "§7Item name `%s§7` from category `%s§7` estimation results after %s§7 days:\nInitial circulation was %s§7, estimated circulation after simulation is %s§7.\nInitial price was %s§7, estimated price after simulation is %s§7.",
   "commands.market.estimate.failure.invalid_marketable_item":
-          "§cItem name `%s` from category `%s` could not be resolved to a valid marketable item. Item name and/or category name is not registered."
+          "§cItem name `%s§c` from category `%s§c` could not be resolved to a valid marketable item. Item name and/or category name is not registered."
 }

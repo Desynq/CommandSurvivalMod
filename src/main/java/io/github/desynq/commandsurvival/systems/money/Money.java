@@ -3,16 +3,18 @@ package io.github.desynq.commandsurvival.systems.money;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /**
  * Data element for money
  * Handles converting types into money and vice versa
  * Also has basic methods for performing operations on money mathematically
  */
-public class Money {
-    private long money;
+public class Money implements Comparable<Money> {
+    private long amount;
 
     private Money(long cents) {
-        this.money = cents;
+        this.amount = cents;
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -22,7 +24,8 @@ public class Money {
     /**
      * Technically also fromRaw() since money is stored in cents for precision
      */
-    public static Money fromCents(long cents) {
+    @Contract(value = "_ -> new", pure = true)
+    public static @NotNull Money fromCents(long cents) {
         return new Money(cents);
     }
 
@@ -61,33 +64,73 @@ public class Money {
     //------------------------------------------------------------------------------------------------------------------
 
     public double getDollars() {
-        return money / 100.0;
+        return amount / 100.0;
     }
 
     public long getRaw() {
-        return money;
+        return amount;
     }
 
     public long getCents() {
-        return money % 100;
+        return amount % 100;
     }
 
     public String getDollarString() {
         double dollars = getDollars();
         String moneyFormatted = String.format("$%,.2f", Math.abs(dollars));
-        return (money < 0 ? "-" : "") + moneyFormatted;
+        return (amount < 0 ? "-" : "") + moneyFormatted;
     }
 
     //------------------------------------------------------------------------------------------------------------------
     // OPERATIONS
     //------------------------------------------------------------------------------------------------------------------
 
-    public Money add(long moneyToAdd) {
-        money += moneyToAdd;
+    public Money copy() {
+        return new Money(amount);
+    }
+
+    public Money add(long value) {
+        amount += value;
         return this;
     }
 
-    public Money add(Money moneyToAdd) {
-        return add(moneyToAdd.money);
+    public Money add(@NotNull Money other) {
+        return this.add(other.amount);
+    }
+
+    public Money subtract(long value) {
+        amount -= value;
+        return this;
+    }
+
+    public Money subtract(@NotNull Money other) {
+        return this.subtract(other.amount);
+    }
+
+    public Money multiply(long value) {
+        amount *= value;
+        return this;
+    }
+
+    public Money multiply(@NotNull Money other) {
+        return this.multiply(other.amount);
+    }
+
+    @Override
+    public int compareTo(Money other) {
+        return Long.compare(this.amount, other.amount);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Money other = (Money) obj;
+        return compareTo(other) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(amount);  // Ensure consistency with equals
     }
 }

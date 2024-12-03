@@ -7,6 +7,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 import static io.github.desynq.commandsurvival.systems.market.item.MarketableItemBuilderInterface.*;
 
 public class MarketableItemBuilder implements

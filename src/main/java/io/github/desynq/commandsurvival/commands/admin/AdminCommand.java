@@ -3,6 +3,7 @@ package io.github.desynq.commandsurvival.commands.admin;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.arguments.EntityArgument;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
@@ -20,6 +21,12 @@ public class AdminCommand {
                         )
                 )
                 .then(Admin$Money.COMMAND)
+                .then(literal("get_uuid")
+                        .requires(CommandSourceStack::isPlayer)
+                        .then(argument("entity", EntityArgument.entity())
+                                .executes(c -> new GetUUIDCommand(c).getResult())
+                        )
+                )
         );
     }
 }

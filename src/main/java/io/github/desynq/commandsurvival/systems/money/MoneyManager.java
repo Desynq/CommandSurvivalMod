@@ -22,4 +22,12 @@ public class MoneyManager {
     public static void applyToPlayer(String stringUUID, Money money) {
         MoneySerializer.setMoney(stringUUID, money);
     }
+
+    public static void applyToPlayer(Player player, Money money) {
+        applyToPlayer(player.getStringUUID(), money);
+    }
+
+    public static void applyToPlayer(Player player, long rawMoney) {
+        applyToPlayer(player, Money.fromCents(rawMoney));
+    }
 }
