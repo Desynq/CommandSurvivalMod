@@ -4,24 +4,34 @@ import io.github.desynq.commandsurvival.systems.money.Money;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 public class ComponentBuilder {
     private final List<MutableComponent> components = new ArrayList<>();
-    private ChatFormatting[] defaultFormats = new ChatFormatting[0];
+    private Style defaultStyle = Style.EMPTY;
 
     public ComponentBuilder() {}
 
     public ComponentBuilder(ChatFormatting... defaultFormats) {
-        this.defaultFormats = defaultFormats;
+        defaultStyle.applyFormats(defaultFormats);
+    }
+
+    public ComponentBuilder(Style defaultStyle) {
+        this.defaultStyle = defaultStyle;
+    }
+
+    public ComponentBuilder(@NotNull UnaryOperator<Style> modifyFunc) {
+        modifyFunc.apply(defaultStyle);
     }
 
     public ComponentBuilder next(String s, ChatFormatting... formats) {
-        components.add(Component.literal(s).withStyle(defaultFormats).withStyle(formats));
+        components.add(Component.literal(s).withStyle(defaultStyle).withStyle(formats));
         return this;
     }
 

@@ -20,12 +20,14 @@ public class BuyOperation {
         private Money buyPrice;
         private Money playerBalance;
         private double circulation;
+        private Money sellPrice;
     }
 
     private static class AfterOperation {
         private Money buyPrice;
         private Money playerBalance;
         private double circulation;
+        private Money sellPrice;
     }
 
     public BuyOperation(Player player, @NotNull MarketableItem marketableItem, int amount) {
@@ -48,10 +50,14 @@ public class BuyOperation {
                 buyPrice -> before.buyPrice = buyPrice,
                 () -> buyResult = BuyResult.NOT_BUYABLE
         );
-        if (buyResult == BuyResult.NOT_BUYABLE) return;
+        if (buyResult == BuyResult.NOT_BUYABLE) {
+            return;
+        }
 
         before.playerBalance = MoneyManager.fromPlayer(player);
         before.circulation = marketableItem.getCirculation();
+        before.sellPrice = marketableItem.getSellPrice();
+
         totalBuyPrice = before.buyPrice.copy().multiply(amount);
 
         if (before.playerBalance.compareTo(totalBuyPrice) < 0) {
@@ -62,9 +68,13 @@ public class BuyOperation {
     private void processAfterOperation() {
         after = new AfterOperation();
         after.playerBalance = before.playerBalance.copy().subtract(totalBuyPrice);
+
         MoneyManager.applyToPlayer(player, after.playerBalance);
         marketableItem.addToCirculation(-amount);
+
         after.circulation = marketableItem.getCirculation();
+        after.buyPrice = marketableItem.getBuyPrice().orElseThrow();
+        after.sellPrice = marketableItem.getSellPrice();
 
         ((PlayerKJS) player).kjs$give(marketableItem.itemStack.copyWithCount(amount));
     }
@@ -95,6 +105,10 @@ public class BuyOperation {
         return before.circulation;
     }
 
+    public Money getSellPriceBefore() {
+        return before.sellPrice;
+    }
+
     public Money getBuyPriceAfter() {
         validateSuccess();
         return after.buyPrice;
@@ -108,5 +122,10 @@ public class BuyOperation {
     public double getCirculationAfter() {
         validateSuccess();
         return after.circulation;
+    }
+
+    public Money getSellPriceAfter() {
+        validateSuccess();
+        return after.sellPrice;
     }
 }
