@@ -11,10 +11,10 @@ import net.minecraft.world.entity.Entity;
 
 import static net.minecraft.ChatFormatting.*;
 
-public class GetUUIDCommand extends PlayerCommandExecutor {
+public class AdminGetUUIDExecutor extends PlayerCommandExecutor {
     private Entity entity;
 
-    public GetUUIDCommand(CommandContext<CommandSourceStack> command) {
+    public AdminGetUUIDExecutor(CommandContext<CommandSourceStack> command) throws CommandSyntaxException {
         super(command);
         try {
             entity = EntityArgument.getEntity(command, "entity");

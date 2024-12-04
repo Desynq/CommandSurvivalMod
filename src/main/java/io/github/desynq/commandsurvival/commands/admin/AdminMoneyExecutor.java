@@ -16,7 +16,7 @@ import static net.minecraft.ChatFormatting.*;
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
-class Admin$Money {
+class AdminMoneyExecutor {
 
     private static final RequiredArgumentBuilder<CommandSourceStack, String> USERNAME_ARGUMENT =
             argument("username", StringArgumentType.string());
@@ -24,12 +24,12 @@ class Admin$Money {
     public static final LiteralArgumentBuilder<CommandSourceStack> COMMAND =
             literal("money")
                     .then(literal("get")
-                            .then(USERNAME_ARGUMENT.executes(Admin$Money::getMoney))
+                            .then(USERNAME_ARGUMENT.executes(AdminMoneyExecutor::getMoney))
                     )
                     .then(literal("set")
                             .then(USERNAME_ARGUMENT
                                     .then(argument("amount", StringArgumentType.string())
-                                            .executes(SetMoneyProcess::execute)
+                                            .executes(AdminMoneySetExecutor::execute)
                                     )
                             )
                     );

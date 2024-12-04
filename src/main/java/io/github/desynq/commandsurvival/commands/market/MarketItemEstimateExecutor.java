@@ -15,13 +15,13 @@ import java.util.Objects;
 
 import static net.minecraft.ChatFormatting.*;
 
-public class EstimateSubcommand {
+public class MarketItemEstimateExecutor {
     private final int days;
     private final String itemCategory;
     private final String itemName;
     private final @NotNull Player player;
 
-    private EstimateSubcommand(CommandContext<CommandSourceStack> command) {
+    private MarketItemEstimateExecutor(CommandContext<CommandSourceStack> command) {
         days = IntegerArgumentType.getInteger(command, "days");
         itemCategory = StringArgumentType.getString(command, "item_category");
         itemName = StringArgumentType.getString(command, "item_name");
@@ -34,7 +34,7 @@ public class EstimateSubcommand {
     }
 
     public static int execute(CommandContext<CommandSourceStack> command) {
-        new EstimateSubcommand(command);
+        new MarketItemEstimateExecutor(command);
         return 1;
     }
 

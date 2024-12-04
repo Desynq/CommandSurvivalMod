@@ -11,12 +11,12 @@ import net.minecraft.world.entity.player.Player;
 
 import static net.minecraft.ChatFormatting.*;
 
-public class SetMoneyProcess {
+public class AdminMoneySetExecutor {
     private final Money money;
     private final Player player;
     private Money previousMoney;
 
-    private SetMoneyProcess(Username username, Money money, Player player) {
+    private AdminMoneySetExecutor(Username username, Money money, Player player) {
         this.money = money;
         this.player = player;
         if (money == null) {
@@ -72,7 +72,7 @@ public class SetMoneyProcess {
         Money money = Money.fromString(moneyString);
         Player player = command.getSource().getPlayer();
 
-        new SetMoneyProcess(username, money, player);
+        new AdminMoneySetExecutor(username, money, player);
         return 1;
     }
 }

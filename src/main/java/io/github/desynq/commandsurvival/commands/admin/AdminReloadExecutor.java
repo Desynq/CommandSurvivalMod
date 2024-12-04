@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
-public class Admin$Reload {
+public class AdminReloadExecutor {
 
     public static int scheduleReload(int startSeconds) {
         for (int seconds = startSeconds; seconds >= 0; seconds--) {
