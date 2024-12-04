@@ -85,7 +85,7 @@ public class Money implements Comparable<Money> {
     // OPERATIONS
     //------------------------------------------------------------------------------------------------------------------
 
-    public Money copy() {
+    public @NotNull Money copy() {
         return new Money(amount);
     }
 
@@ -107,7 +107,7 @@ public class Money implements Comparable<Money> {
         return this.subtract(other.amount);
     }
 
-    public Money multiply(long value) {
+    public @NotNull Money multiply(long value) {
         amount *= value;
         return this;
     }
@@ -117,7 +117,7 @@ public class Money implements Comparable<Money> {
     }
 
     @Override
-    public int compareTo(Money other) {
+    public int compareTo(@NotNull Money other) {
         return Long.compare(this.amount, other.amount);
     }
 

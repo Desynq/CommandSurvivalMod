@@ -62,6 +62,10 @@ public abstract class Marketable {
         return getSellPrice(getCirculation());
     }
 
+    public boolean isNotBuyable() {
+        return buyModifier == null;
+    }
+
     public Optional<Money> getBuyPrice(double circulation) {
         if (buyModifier == null) {
             return Optional.empty(); // not buyable
@@ -76,4 +80,5 @@ public abstract class Marketable {
     public Optional<Money> getBuyPrice() {
         return getBuyPrice(getCirculation());
     }
+
 }

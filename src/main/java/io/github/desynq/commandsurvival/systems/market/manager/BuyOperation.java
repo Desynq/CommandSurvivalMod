@@ -6,82 +6,72 @@ import io.github.desynq.commandsurvival.systems.money.Money;
 import io.github.desynq.commandsurvival.systems.money.MoneyManager;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BuyOperation {
-    private final Player player;
     private final @NotNull MarketableItem marketableItem;
+    private final Player player;
     private final int amount;
-    private final BeforeOperation before;
-    private BuyResult buyResult;
-    private AfterOperation after;
-    private Money totalBuyPrice;
+    private final BuyResult buyResult;
+    private @Nullable Money totalBuyPrice;
 
-    private static class BeforeOperation {
-        private Money buyPrice;
-        private Money playerBalance;
-        private double circulation;
-        private Money sellPrice;
-    }
+    private static final int BEFORE = 0;
+    private static final int AFTER = 1;
+    private static final int NUMBER_OF_STAGES = 2;
 
-    private static class AfterOperation {
-        private Money buyPrice;
-        private Money playerBalance;
-        private double circulation;
-        private Money sellPrice;
-    }
+    private final Money[] buyPrice = new Money[NUMBER_OF_STAGES];
+    private final Money[] playerBalance = new Money[NUMBER_OF_STAGES];
+    private final double[] circulation = new double[NUMBER_OF_STAGES];
+    private final Money[] sellPrice = new Money[NUMBER_OF_STAGES];
 
     public BuyOperation(Player player, @NotNull MarketableItem marketableItem, int amount) {
-        this.player = player;
         this.marketableItem = marketableItem;
+        this.player = player;
         this.amount = amount;
-
-        before = new BeforeOperation();
-        initializeBeforeOperation();
-        if (buyResult == BuyResult.NOT_BUYABLE || buyResult == BuyResult.NOT_AFFORDABLE) {
-            return;
-        }
-
-        processAfterOperation();
-        buyResult = BuyResult.SUCCESS;
+        buyResult = performBuyOperation();
     }
 
-    private void initializeBeforeOperation() {
-        marketableItem.getBuyPrice().ifPresentOrElse(
-                buyPrice -> before.buyPrice = buyPrice,
-                () -> buyResult = BuyResult.NOT_BUYABLE
-        );
-        if (buyResult == BuyResult.NOT_BUYABLE) {
-            return;
+    private BuyResult performBuyOperation() {
+        playerBalance[BEFORE] = MoneyManager.fromPlayer(player);
+        circulation[BEFORE] = marketableItem.getCirculation();
+        sellPrice[BEFORE] = marketableItem.getSellPrice();
+
+        if (marketableItem.isNotBuyable()) {
+            return BuyResult.NOT_BUYABLE;
         }
 
-        before.playerBalance = MoneyManager.fromPlayer(player);
-        before.circulation = marketableItem.getCirculation();
-        before.sellPrice = marketableItem.getSellPrice();
+        buyPrice[BEFORE] = marketableItem.getBuyPrice().orElseThrow();
+        totalBuyPrice = buyPrice[BEFORE].copy().multiply(amount);
 
-        totalBuyPrice = before.buyPrice.copy().multiply(amount);
-
-        if (before.playerBalance.compareTo(totalBuyPrice) < 0) {
-            buyResult = BuyResult.NOT_AFFORDABLE;
+        if (playerBalance[BEFORE].compareTo(totalBuyPrice) < 0) {
+            return BuyResult.NOT_AFFORDABLE;
         }
-    }
 
-    private void processAfterOperation() {
-        after = new AfterOperation();
-        after.playerBalance = before.playerBalance.copy().subtract(totalBuyPrice);
+        playerBalance[AFTER] = playerBalance[BEFORE].copy().subtract(totalBuyPrice);
 
-        MoneyManager.applyToPlayer(player, after.playerBalance);
+        MoneyManager.applyToPlayer(player, playerBalance[AFTER]);
         marketableItem.addToCirculation(-amount);
-
-        after.circulation = marketableItem.getCirculation();
-        after.buyPrice = marketableItem.getBuyPrice().orElseThrow();
-        after.sellPrice = marketableItem.getSellPrice();
-
         ((PlayerKJS) player).kjs$give(marketableItem.itemStack.copyWithCount(amount));
+
+        circulation[AFTER] = marketableItem.getCirculation();
+        buyPrice[AFTER] = marketableItem.getBuyPrice().orElseThrow();
+        sellPrice[AFTER] = marketableItem.getSellPrice();
+        return BuyResult.SUCCESS;
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // GETTERS
+    //------------------------------------------------------------------------------------------------------------------
 
     private void validateSuccess() {
         if (buyResult != BuyResult.SUCCESS) {
             throw new IllegalStateException("Operation was cancelled, cannot access post-operation data");
+        }
+    }
+
+    private void validateBuyable() {
+        if (buyResult != BuyResult.NOT_BUYABLE) {
+            throw new IllegalStateException("Operation was cancelled, item does not have a buy price");
         }
     }
 
@@ -90,42 +80,44 @@ public class BuyOperation {
     }
 
     public Money getTotalBuyPrice() {
+        validateBuyable();
         return totalBuyPrice;
     }
 
     public Money getBuyPriceBefore() {
-        return before.buyPrice;
+        validateBuyable();
+        return buyPrice[BEFORE];
     }
 
     public Money getPlayerBalanceBefore() {
-        return before.playerBalance;
+        return playerBalance[BEFORE];
     }
 
     public double getCirculationBefore() {
-        return before.circulation;
+        return circulation[BEFORE];
     }
 
     public Money getSellPriceBefore() {
-        return before.sellPrice;
+        return sellPrice[BEFORE];
     }
 
     public Money getBuyPriceAfter() {
         validateSuccess();
-        return after.buyPrice;
+        return buyPrice[AFTER];
     }
 
     public Money getPlayerBalanceAfter() {
         validateSuccess();
-        return after.playerBalance;
+        return playerBalance[AFTER];
     }
 
     public double getCirculationAfter() {
         validateSuccess();
-        return after.circulation;
+        return circulation[AFTER];
     }
 
     public Money getSellPriceAfter() {
         validateSuccess();
-        return after.sellPrice;
+        return sellPrice[AFTER];
     }
 }

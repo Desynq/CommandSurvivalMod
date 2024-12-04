@@ -83,14 +83,40 @@ public class MarketItemBuyExecutor extends PlayerCommandExecutor {
     }
 
     private void handleNotBuyable() {
-        executor.sendSystemMessage(new ComponentBuilder()
+        // Item 'diamond' is not buyable.
+        executor.sendSystemMessage(new ComponentBuilder(RED)
+                .next("Item '").next(itemName, YELLOW).next("' is not buyable.")
                 .build()
         );
     }
 
     private void handleNotAffordable() {
-        executor.sendSystemMessage(new ComponentBuilder()
+        Money buyPrice = buyOperation.getBuyPriceBefore();
+        Money totalBuyPrice = buyOperation.getTotalBuyPrice();
+        Money balance = buyOperation.getPlayerBalanceBefore();
+        Money missing = totalBuyPrice.copy().subtract(balance);
+        // * Item costs $100.00 per unit, $500.00 total (5 units).
+        // * Balance is $400.00, missing $100.00.
+        HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(GRAY)
+                .next("* Item costs ")
+                .next(buyPrice, DARK_GREEN)
+                .next(" per unit, ")
+                .next(totalBuyPrice, DARK_GREEN)
+                .next(" total (")
+                .next(amount, YELLOW)
+                .next(" units).")
+                .next("\n* Balance is ")
+                .next(balance, DARK_GREEN)
+                .next(", missing ")
+                .next(missing, RED)
+                .next(".")
                 .build()
+        );
+        // Could not afford item 'diamond'.
+        executor.sendSystemMessage(new ComponentBuilder(WHITE)
+                .next("Could not afford item '").next(itemName, YELLOW).next("'.")
+                .build()
+                .withStyle(style -> style.withHoverEvent(hoverEvent))
         );
     }
 }
