@@ -62,14 +62,14 @@ public class ComponentBuilder {
 
     public MutableComponent build(String translationKey) {
         if (components.isEmpty()) {
-            throw new IllegalArgumentException("No components added");
+            throw new IllegalStateException("No components added");
         }
         return Component.translatable(translationKey, components.toArray());
     }
 
     public MutableComponent build() {
         if (components.isEmpty()) {
-            throw new IllegalArgumentException("No components added");
+            throw new IllegalStateException("No components added");
         }
         MutableComponent base = components.get(0);
         for (int i = 1; i < components.size(); i++) {
