@@ -57,19 +57,23 @@ public class MarketableItem extends Marketable {
     //------------------------------------------------------------------------------------------------------------------
 
     public EstimateResult estimateSellPrice(int days) {
-        double circulation = getCirculation();
-        double percentage;
+        double initialCirculation = getCirculation();
+        double finalCirculation = simulateFluctuation(initialCirculation, days);
 
-        for (int day = days; day >= 0; day--) {
-            percentage = MarketableItemHelper.generateFluctuationPercentage();
-            circulation = MarketableItemHelper.getFluctuatedCirculation(circulation, percentage);
-        }
         return new EstimateResult(
                 getSellPrice(),
-                getSellPrice(circulation),
-                getCirculation(),
-                circulation,
+                getSellPrice(finalCirculation),
+                initialCirculation,
+                finalCirculation,
                 days
         );
+    }
+
+    private double simulateFluctuation(double circulation, int days) {
+        for (int day = days; day >= 0; day--) {
+            double percentage = MarketableItemHelper.generateFluctuationPercentage();
+            circulation = MarketableItemHelper.getFluctuatedCirculation(circulation, percentage);
+        }
+        return circulation;
     }
 }
