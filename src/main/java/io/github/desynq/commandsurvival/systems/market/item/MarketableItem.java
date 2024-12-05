@@ -30,6 +30,18 @@ public class MarketableItem extends Marketable {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    // ITEM ACCESSORS
+    //------------------------------------------------------------------------------------------------------------------
+
+    public String getItemId() {
+        ResourceLocation rl = ForgeRegistries.ITEMS.getKey(itemStack.getItem());
+        if (rl == null) {
+            throw new IllegalArgumentException("Marketable item is using an unregistered item");
+        }
+        return rl.toString();
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
     // Circulation
     //------------------------------------------------------------------------------------------------------------------
 
