@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -29,6 +30,76 @@ public class ComponentBuilder {
         modifyFunc.apply(defaultStyle);
     }
 
+    /**
+     * - {@code RED, itemName, GRAY} will make itemName have the color gray despite the
+     * default style color being RED<br>
+     * - {@code RED, "Specified item"} will make the string have the color red as the
+     * default style was defined as RED
+     */
+    public ComponentBuilder(Object... args) {
+        Arrays.stream(args).forEach(this::manageObject);
+    }
+
+    /**
+     * Builds a {@link MutableComponent} by processing the provided arguments.
+     *
+     * @param args the objects to be used in creating the component; can include strings, styles, or components
+     * @return a {@link MutableComponent} constructed from the specified arguments
+     * @throws IllegalStateException if no components are added during the build process
+     */
+    public static MutableComponent build(Object... args) {
+        return new ComponentBuilder(args).build();
+    }
+
+    private void manageObject(Object object) {
+        if (object instanceof ChatFormatting format) {
+            applyFormatToLastComponent(format);
+        }
+        else if (object instanceof Style style) {
+            applyStyleToLastComponent(style);
+        }
+        else if (object instanceof Component) {
+            addComponent((MutableComponent) object);
+        }
+        else {
+            addStringWithDefaultStyle(String.valueOf(object));
+        }
+    }
+
+    /**
+     * Applies the specified chat format to the last component in the list of components.
+     * If the component list is empty, the format is applied to the default style instead.
+     *
+     * @param format the chat format to apply to the last component or the default style
+     */
+    private void applyFormatToLastComponent(ChatFormatting format) {
+        if (components.isEmpty()) {
+            defaultStyle.applyFormat(format);
+            return;
+        }
+        components.get(components.size() - 1).withStyle(format);
+    }
+
+    private void applyStyleToLastComponent(Style style) {
+        if (components.isEmpty()) {
+            defaultStyle = style.applyTo(defaultStyle);
+            return;
+        }
+        components.get(components.size() - 1).withStyle(style);
+    }
+
+    private void addComponent(MutableComponent component) {
+        components.add(component);
+    }
+
+    private void addStringWithDefaultStyle(String string) {
+        components.add(Component.literal(string).withStyle(defaultStyle));
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Builder Methods
+    //------------------------------------------------------------------------------------------------------------------
+
     public ComponentBuilder next(String s, ChatFormatting... formats) {
         components.add(Component.literal(s).withStyle(defaultStyle).withStyle(formats));
         return this;
@@ -45,7 +116,7 @@ public class ComponentBuilder {
     }
 
     public ComponentBuilder next(@NotNull Money money, ChatFormatting... formats) {
-        next(money.getDollarString(), formats);
+        next(money.toString(), formats);
         return this;
     }
 

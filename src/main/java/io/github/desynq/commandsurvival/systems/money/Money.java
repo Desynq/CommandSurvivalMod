@@ -18,7 +18,7 @@ public class Money implements Comparable<Money> {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    // FACTORIES
+    // STATIC FACTORIES
     //------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -75,6 +75,7 @@ public class Money implements Comparable<Money> {
         return amount % 100;
     }
 
+    @Deprecated
     public String getDollarString() {
         double dollars = getDollars();
         String moneyFormatted = String.format("$%,.2f", Math.abs(dollars));
@@ -107,7 +108,7 @@ public class Money implements Comparable<Money> {
         return this.subtract(other.amount);
     }
 
-    public @NotNull Money multiply(long value) {
+    public Money multiply(long value) {
         amount *= value;
         return this;
     }
@@ -115,6 +116,10 @@ public class Money implements Comparable<Money> {
     public Money multiply(@NotNull Money other) {
         return this.multiply(other.amount);
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // OVERRIDING
+    //------------------------------------------------------------------------------------------------------------------
 
     @Override
     public int compareTo(@NotNull Money other) {
@@ -132,5 +137,12 @@ public class Money implements Comparable<Money> {
     @Override
     public int hashCode() {
         return Objects.hash(amount);  // Ensure consistency with equals
+    }
+
+    @Override
+    public String toString() {
+        double dollars = getDollars();
+        String moneyFormatted = String.format("$%,.2f", Math.abs(dollars));
+        return (amount < 0 ? "-" : "") + moneyFormatted;
     }
 }

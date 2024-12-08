@@ -23,11 +23,16 @@ public class MoneyManager {
         MoneySerializer.setMoney(stringUUID, money);
     }
 
-    public static void applyToPlayer(Player player, Money money) {
+    public static void applyToPlayer(@NotNull Player player, Money money) {
         applyToPlayer(player.getStringUUID(), money);
     }
 
-    public static void applyToPlayer(Player player, long rawMoney) {
-        applyToPlayer(player, Money.fromCents(rawMoney));
+    public static void addToPlayer(String stringUUID, Money money) {
+        Money current = fromStringUUID(stringUUID);
+        applyToPlayer(stringUUID, current.add(money));
+    }
+
+    public static void addToPlayer(@NotNull Player player, Money money) {
+        addToPlayer(player.getStringUUID(), money);
     }
 }

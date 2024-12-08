@@ -12,8 +12,12 @@ import net.minecraftforge.fml.common.Mod;
 public class ServerHelper {
     public static MinecraftServer server;
 
-    public static void runCommand(String command) {
-        server.getCommands().performPrefixedCommand(server.createCommandSourceStack().withSuppressedOutput(), command);
+    public static int runCommand(String command) {
+        return server.getCommands().performPrefixedCommand(server.createCommandSourceStack().withSuppressedOutput(), command);
+    }
+
+    public static int runCommand(String command, Object... args) {
+        return runCommand(String.format(command, args));
     }
 
     public static CompoundTag getPersistentData() {

@@ -35,7 +35,7 @@ public class MarketItemBuyExecutor extends PlayerCommandExecutor {
     }
 
     private void handleBuying(@NotNull MarketableItem marketableItem) {
-        buyOperation = new BuyOperation(executor, marketableItem, amount);
+        buyOperation = new BuyOperation(executor, marketableItem, amount).executeTransaction();
         switch (buyOperation.getResult()) {
             case SUCCESS -> handleSuccess();
             case NOT_BUYABLE -> handleNotBuyable();
@@ -44,7 +44,7 @@ public class MarketItemBuyExecutor extends PlayerCommandExecutor {
     }
 
     private void handleSuccess() {
-        Money totalBuyPrice = buyOperation.getTotalBuyPrice();
+        Money totalBuyPrice = buyOperation.getTotalTransactionPrice();
         String circulationBefore = String.format("%.3f", buyOperation.getCirculationBefore());
         String circulationAfter = String.format("%.3f", buyOperation.getCirculationAfter());
         Money buyPriceBefore = buyOperation.getBuyPriceBefore();
@@ -68,7 +68,11 @@ public class MarketItemBuyExecutor extends PlayerCommandExecutor {
 
         // Bought 64x 'diamond' for $1.00
         executor.sendSystemMessage(new ComponentBuilder(WHITE)
-                .next("Bought ").next(amount, YELLOW).next("x '").next(itemName, YELLOW).next("' for ").next(totalBuyPrice, DARK_GREEN)
+                .next("Bought ")
+                .next(amount, YELLOW)
+                .next("x '").next(itemName, YELLOW)
+                .next("' for ")
+                .next(totalBuyPrice, DARK_GREEN)
                 .build()
                 .withStyle(style -> style.withHoverEvent(hoverEvent))
         );
@@ -92,7 +96,7 @@ public class MarketItemBuyExecutor extends PlayerCommandExecutor {
 
     private void handleNotAffordable() {
         Money buyPrice = buyOperation.getBuyPriceBefore();
-        Money totalBuyPrice = buyOperation.getTotalBuyPrice();
+        Money totalBuyPrice = buyOperation.getTotalTransactionPrice();
         Money balance = buyOperation.getPlayerBalanceBefore();
         Money missing = totalBuyPrice.copy().subtract(balance);
         // * Item costs $100.00 per unit, $500.00 total (5 units).

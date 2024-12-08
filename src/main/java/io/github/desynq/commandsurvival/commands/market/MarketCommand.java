@@ -9,6 +9,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.github.desynq.commandsurvival.systems.market.item.MarketableItemInstancesManager;
 import net.minecraft.commands.CommandSourceStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -27,15 +28,18 @@ public class MarketCommand {
                     .suggests(MarketCommand::suggestItemName)
                     .then(literal("sell")
                             .then(literal("all")
-                                    //.executes()
+                                    .executes(cc ->
+                                            new MarketItemSellExecutor(cc).getResult())
                             )
                             .then(argument("amount", IntegerArgumentType.integer(1))
-                                    //.executes()
+                                    .executes(cc ->
+                                            new MarketItemSellExecutor(cc).getResult())
                             )
                     )
                     .then(literal("buy")
                             .then(argument("amount", IntegerArgumentType.integer(1))
-                                    .executes(c -> new MarketItemBuyExecutor(c).getResult())
+                                    .executes(cc ->
+                                            new MarketItemBuyExecutor(cc).getResult())
                             )
                     )
                     .then(literal("estimate")
@@ -47,7 +51,7 @@ public class MarketCommand {
                             //.executes()
                     );
 
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static void register(@NotNull CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(literal("market")
                 .requires(CommandSourceStack::isPlayer)
                 .then(literal("item")
@@ -60,15 +64,15 @@ public class MarketCommand {
     }
 
 
-    private static CompletableFuture<Suggestions> suggestItemCategory(CommandContext<CommandSourceStack> command,
-                                                                      SuggestionsBuilder builder) {
+    private static CompletableFuture<Suggestions> suggestItemCategory(CommandContext<CommandSourceStack> cc,
+                                                                      @NotNull SuggestionsBuilder builder) {
         MarketableItemInstancesManager.getCategories().forEach(builder::suggest);
         return builder.buildFuture();
     }
 
-    private static CompletableFuture<Suggestions> suggestItemName(CommandContext<CommandSourceStack> command,
-                                                                  SuggestionsBuilder builder) {
-        String category = StringArgumentType.getString(command, "item_category");
+    private static CompletableFuture<Suggestions> suggestItemName(CommandContext<CommandSourceStack> cc,
+                                                                  @NotNull SuggestionsBuilder builder) {
+        String category = StringArgumentType.getString(cc, "item_category");
         MarketableItemInstancesManager.getNamesFromCategory(category).forEach(builder::suggest);
         return builder.buildFuture();
     }

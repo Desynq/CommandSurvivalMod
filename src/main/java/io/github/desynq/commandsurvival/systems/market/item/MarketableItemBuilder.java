@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import static io.github.desynq.commandsurvival.systems.market.item.MarketableItemBuilderInterface.*;
 
@@ -26,7 +27,7 @@ public class MarketableItemBuilder implements
     public Money basePrice;
     public String itemCategory;
     public String itemName;
-    public @Nullable MarketableItemPredicate<Player, CompoundTag> marketableItemPredicate;
+    public @Nullable String nbtMatch = "";
     public @Nullable Integer scaleQuantity;
     public @Nullable Money priceFloor;
     public @Nullable Money priceCeiling;

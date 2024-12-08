@@ -1,8 +1,9 @@
 package io.github.desynq.commandsurvival.systems.market.manager;
 
-public enum BuyResult implements IResult {
-    NOT_BUYABLE,
-    NOT_AFFORDABLE,
+public enum SellResult implements IResult {
+    NEGATIVE_AMOUNT_SPECIFIED,
+    ZERO_AMOUNT_SPECIFIED,
+    NO_ITEMS,
     SUCCESS;
 
     @Override
@@ -12,6 +13,6 @@ public enum BuyResult implements IResult {
 
     @Override
     public boolean isTransactionable() {
-        return this != NOT_BUYABLE;
+        return true; // all marketable objects are sellable
     }
 }
