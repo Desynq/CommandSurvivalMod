@@ -42,7 +42,7 @@ public class AdminMoneySetExecutor {
                                 .withStyle(GRAY)
                 )
                 .append(
-                        Component.literal(money.getDollarString())
+                        Component.literal(money.toString())
                                 .withStyle(DARK_GREEN)
                 )
                 .append(
@@ -50,7 +50,7 @@ public class AdminMoneySetExecutor {
                                 .withStyle(GRAY)
                 )
                 .append(
-                        Component.literal(previousMoney.getDollarString())
+                        Component.literal(previousMoney.toString())
                                 .withStyle(YELLOW)
                 )
         );
@@ -67,8 +67,8 @@ public class AdminMoneySetExecutor {
 
 
     public static int execute(CommandContext<CommandSourceStack> command) {
-        Username username = new Username(command, "username");
-        String moneyString = StringArgumentType.getString(command, "amount");
+        Username username = new Username(AdminCommandArgument.USERNAME.get(command));
+        String moneyString = AdminCommandArgument.MONEY.get(command);
         Money money = Money.fromString(moneyString);
         Player player = command.getSource().getPlayer();
 

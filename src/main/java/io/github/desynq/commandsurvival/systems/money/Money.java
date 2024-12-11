@@ -75,13 +75,6 @@ public class Money implements Comparable<Money> {
         return amount % 100;
     }
 
-    @Deprecated
-    public String getDollarString() {
-        double dollars = getDollars();
-        String moneyFormatted = String.format("$%,.2f", Math.abs(dollars));
-        return (amount < 0 ? "-" : "") + moneyFormatted;
-    }
-
     //------------------------------------------------------------------------------------------------------------------
     // OPERATIONS
     //------------------------------------------------------------------------------------------------------------------
